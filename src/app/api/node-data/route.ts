@@ -27,9 +27,9 @@ export async function GET(req: NextRequest) {
       }
 
       const data = JSON.parse(file);
-      data.nodes[1].reachable = !data.nodes[1].reachable;
+      // data.nodes[1].reachable = !data.nodes[1].reachable;
 
-      await saveDataToJSONFile(data);
+      // await saveDataToJSONFile(data);
 
       return NextResponse.json({ data, message: "Success" }, { status: 200 });
     }

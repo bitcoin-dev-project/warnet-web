@@ -48,7 +48,7 @@ const page = () => {
           </div>
         </div>
 
-        <button onClick={savePoints} className='text-white bg-brand-purple rounded-lg px-4 py-3 text-sm w-full max-w-[500px] '>
+        <button onClick={savePoints} disabled={!stylePoints.name && !stylePoints.score} className='text-white bg-brand-purple rounded-lg px-4 py-3 text-sm w-full max-w-[500px] '>
           Update
         </button>
       </div>
