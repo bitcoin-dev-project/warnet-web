@@ -2,6 +2,7 @@ import React from "react";
 import { calculateTeamPoints, getLatestTipHeight } from "@/helpers";
 import CONFIG_DATA from "../../public/config.json";
 import { NodeData } from "@/node";
+import AWARDED_TEAM_POINTS from "../../public/team-points.json";
 
 const NodeItem = ({ data }: { data: NodeData }) => {
   const { reachable, id, tips } = data;
@@ -23,7 +24,7 @@ const NodeItem = ({ data }: { data: NodeData }) => {
 };
 
 export const NodeGroupCards = ({ data, teamName, pointsMapper }: { data: NodeData[]; teamName: string; pointsMapper: Record<string, number> }) => {
-  const { reachableNodes, unReachableNodes } = calculateTeamPoints(data);
+  const { reachableNodes } = calculateTeamPoints(data);
 
   return (
     <div className='border p-3 rounded-xl w-full text-black dark:text-white flex flex-col items-start relative border-b border-gray-200 bg-white dark:bg-gradient-to-b from-zinc-200 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:border lg:bg-gray-200 lg:dark:bg-zinc-800/30 '>
@@ -31,19 +32,8 @@ export const NodeGroupCards = ({ data, teamName, pointsMapper }: { data: NodeDat
         <section className='flex gap-2 items-center justify-between'>
           <div className='flex gap-2 items-center'>
             <h3 className='font-medium text-xl capitalize'>Team {teamName}</h3>
-            {/* <span className={`rounded-full font-medium text-sm leading-[120%] px-3 py-1.5 shadow-sm border-[0.5px] border-[#2d2d2d] text-[#2EAE4E]`}>
-              health
-            </span> */}
           </div>
-
-          {/* <button className='border border-[#2d2d2d] px-4 py-2 rounded-lg' onClick={() => addTeamPoint(teamName)}>
-            Award points
-          </button> */}
         </section>
-        {/* <p className='text-white text-sm opacity-75'>
-          <span className=' capitalize'>{teamName} </span> is a team of {data.length} nodes. They are {reachableNodes} reachable nodes and{" "}
-          {unReachableNodes} unreachable nodes.
-        </p> */}
       </section>
 
       <div className='pt-5 flex flex-col gap-3 w-full'>
@@ -63,6 +53,9 @@ export const NodeGroupCards = ({ data, teamName, pointsMapper }: { data: NodeDat
 };
 
 export const LeaderBoardCards = ({ teamName, index, pointsMapper }: { teamName: string; index: number; pointsMapper: Record<string, number> }) => {
+  const awardPoints: Record<string, number> = AWARDED_TEAM_POINTS ?? {};
+  const totalPoints = pointsMapper[teamName] + awardPoints[teamName] ?? 0;
+
   return (
     <div className='flex gap-3 items-center'>
       <p className=' text-white font-semibold'>{index}.</p>
@@ -72,7 +65,7 @@ export const LeaderBoardCards = ({ teamName, index, pointsMapper }: { teamName: 
         </section>
         <section>
           <p className=' text-xl font-medium'>
-            {pointsMapper[teamName]} <span className='font-normal opacity-75'>pts</span>
+            {pointsMapper[teamName]} {totalPoints} <span className='font-normal opacity-75'>pts</span>
           </p>
         </section>
       </div>

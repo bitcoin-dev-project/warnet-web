@@ -1,29 +1,12 @@
 import React from "react";
-import * as fs from "fs";
-import { LeaderBoardCards, NodeGroupCards } from "@/components/node-group-cards";
 import styles from "@/components/styles.module.css";
+import { LeaderBoardCards, NodeGroupCards } from "@/components/node-group-cards";
 import { getAllTeamPoints, organiseNodesIntoTeams, sortNodesAccordingToPoints } from "@/helpers";
 
 const page = () => {
   const { nodeGroups } = organiseNodesIntoTeams();
   const teamPoints = getAllTeamPoints();
   const sorted = sortNodesAccordingToPoints();
-
-  const initialiseTeamPointsJSON = () => {
-    const teamPoints = getAllTeamPoints();
-
-    const initialiseToZero = Object.fromEntries(Object.entries(teamPoints).map(([key]) => [key, 0]));
-
-    if (fs.existsSync("public/team-points.json")) {
-      return;
-    } else {
-      fs.writeFileSync("public/team-points.json", JSON.stringify(initialiseToZero, null, 2), "utf-8");
-      console.log("awarded points initialized");
-    }
-    return teamPoints;
-  };
-
-  initialiseTeamPointsJSON();
 
   return (
     <div className={`text-black max-h-screen min-h-screen overflow-hidden h-screen flex flex-col p-6 ${styles.adminWrapper}`}>

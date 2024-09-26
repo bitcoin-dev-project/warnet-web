@@ -2,12 +2,12 @@
 
 import React, { useState } from "react";
 import styles from "@/components/styles.module.css";
-import { useRouter } from "next/navigation";
 import AWARDED_TEAM_POINTS from "../../../public/team-points.json";
 
 const page = () => {
   const points = AWARDED_TEAM_POINTS ?? {};
   const [pointMapper, setPointMapper] = useState<{ [key: string]: number }>(points);
+  const [stylePoints, setStylePoints] = useState({ key: "", value: "" });
 
   const handleSaveConfig = async () => {
     try {
@@ -16,7 +16,7 @@ const page = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ key: pointMapper }),
+        body: JSON.stringify({ [stylePoints.key]: Number(stylePoints.value) }),
       });
 
       const result = await response.json();
@@ -49,17 +49,24 @@ const page = () => {
                 name=''
                 id=''
                 className='p-3 rounded-lg text-white border border-gray-500 w-full bg-[#0000007f] bg-gray-600'
-                onChange={(e) => setPointMapper({ ...pointMapper, [e.target.value]: Number(e.target.value) })}
+                onChange={(e) => setStylePoints({ ...stylePoints, key: e.target.value })}
               >
                 <option value=''>Selected</option>
-                {Object.entries(pointMapper).map(([key, value], index) => (
+                {Object.entries(pointMapper).map(([key], index) => (
                   <React.Fragment key={`${key}-${index}`}>
-                    <option key={`${key}-${index}`} value={value}>
+                    <option key={`${key}-${index}`} value={key}>
                       {key}
                     </option>
                   </React.Fragment>
                 ))}
               </select>
+              <input
+                type='text'
+                className='p-3 rounded-lg text-white border border-gray-500 w-full bg-[#0000007f] bg-gray-600'
+                onChange={(e) => setStylePoints({ ...stylePoints, value: e.target.value })}
+                value={stylePoints.value}
+                placeholder='Award style points'
+              />
             </section>
           </div>
         </div>
