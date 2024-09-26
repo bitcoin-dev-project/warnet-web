@@ -1,30 +1,33 @@
 import React from "react";
-import { calculateTeamPoints, getLatestTipHeight } from "@/helpers";
-import CONFIG_DATA from "../../public/config.json";
-import { NodeData } from "@/node";
 import AWARDED_TEAM_POINTS from "../../public/team-points.json";
+import { NodeDataWithStatus } from "@/types";
+import { StatusCofig } from "@/app/config";
 
-const NodeItem = ({ data }: { data: NodeData }) => {
+type NodeItemProps = {
+  data: NodeDataWithStatus;
+};
+const NodeItem = ({ data }: NodeItemProps) => {
   const { reachable, id, tips } = data;
 
-  const {
-    config: { blocks_behind_before_considered_lagging },
-  } = CONFIG_DATA;
-  const { latestTipHeight } = getLatestTipHeight();
-
-  const nodeHeightRange = reachable && latestTipHeight - tips[0].height >= blocks_behind_before_considered_lagging;
-
+  const color = StatusCofig[data.status as keyof typeof StatusCofig];
   return (
     <div
-      className={`${nodeHeightRange ? "bg-gray-600" : reachable ? "bg-green-500" : "bg-red-500"} py-1 px-2.5 border border-[#2d2d2d]  flex items-center justify-center rounded cursor-pointer`}
+      className={`${color} py-1 px-2.5 border border-[#2d2d2d]  flex items-center justify-center rounded cursor-pointer`}
     >
       <p className='font-semibold text-white'>{id}</p>
     </div>
   );
 };
 
-export const NodeGroupCards = ({ data, teamName, pointsMapper }: { data: NodeData[]; teamName: string; pointsMapper: Record<string, number> }) => {
-  const { reachableNodes } = calculateTeamPoints(data);
+type NodeGroupCardsProps = {
+  data: NodeDataWithStatus[];
+  teamName: string;
+  pointsMapper: Record<string, number>;
+};
+
+export const NodeGroupCards = ({ data, teamName, pointsMapper }: NodeGroupCardsProps) => {
+  
+  const reachableNodes = data.filter((item) => item.reachable).length;
 
   return (
     <div className='border p-3 rounded-xl w-full text-black dark:text-white flex flex-col items-start relative border-b border-gray-200 bg-white dark:bg-gradient-to-b from-zinc-200 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:border lg:bg-gray-200 lg:dark:bg-zinc-800/30 '>
@@ -52,9 +55,15 @@ export const NodeGroupCards = ({ data, teamName, pointsMapper }: { data: NodeDat
   );
 };
 
-export const LeaderBoardCards = ({ teamName, index, pointsMapper }: { teamName: string; index: number; pointsMapper: Record<string, number> }) => {
-  const awardPoints: Record<string, number> = AWARDED_TEAM_POINTS ?? {};
-  const totalPoints = pointsMapper[teamName] + awardPoints[teamName] ?? 0;
+type LeaderBoardCardsProps = {
+  teamName: string;
+  index: number;
+  pointsMapper: Record<string, number>;
+  awardedPoints: Record<string, number>;
+};
+
+export const LeaderBoardCards = ({ teamName, index, pointsMapper, awardedPoints }: LeaderBoardCardsProps) => {
+  const totalPoints = pointsMapper[teamName] + awardedPoints[teamName] ?? 0;
 
   return (
     <div className='flex gap-3 items-center'>
