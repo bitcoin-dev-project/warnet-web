@@ -1,32 +1,13 @@
 import { NodeData } from "@/node";
-import CONFIG_DATA from "../../public/config.json";
-import HEADER_AND_TEAMS_JSON from "../../public/header-and-teams.json";
 import { GameConfig, HeaderInfoData, NodeDataWithStatus } from "@/types";
 import { StatusCofigType } from "@/app/config";
 import { getConfig } from "@/app/config";
-
-
-// const { header_infos, nodes } = HEADER_AND_TEAMS_JSON;
 
 export const getLatestTipHeight = ({header_infos}: {header_infos: HeaderInfoData[] | []}) => {
   const latestTipHeight = Math.max(...header_infos.map((item) => item?.height ?? 0));
 
   return { latestTipHeight };
 };
-
-// export const calculateTeamPoints = (data: NodeData[], header_infos: HeaderInfoData[]) => {
-//   const { latestTipHeight } = getLatestTipHeight({header_infos});
-
-//   const reachable = data.filter((item) => item.reachable && latestTipHeight - item.tips[0].height < blocks_behind_before_considered_lagging);
-//   const unreachable = data.filter((item) => !item.reachable);
-//   const laggingNodes = data.filter((item) => item.reachable && latestTipHeight - item.tips[0].height >= blocks_behind_before_considered_lagging);
-
-//   const points = reachable.length + unreachable.length * points_per_unreachable_node + laggingNodes.length * points_per_lagging_node;
-//   const reachableNodes = reachable.length;
-//   const unReachableNodes = unreachable.length;
-
-//   return { points, reachableNodes, unReachableNodes, laggingNodes };
-// };
 
 export const organiseNodesIntoTeams = <K>({nodes, teams, formatNode}: {nodes: NodeData[], teams: GameConfig["teams"], formatNode: (teamNode: NodeData) => K}) => {
   const nodeGroups: Record<string, K[]> = {};
@@ -79,32 +60,4 @@ export const compileTeamNode = (teamNode: NodeData, latestTipHeight: number): No
         }
     }
     return {...teamNode, ...extraStats};
-}
-
-// export const getAllTeamPoints = () => {
-//   const { nodeGroups } = organiseNodesIntoTeams();
-
-//   const teamPoints = Object.fromEntries(
-//     Object.entries(nodeGroups).map(([key, value]) => {
-//       const { points } = calculateTeamPoints(value);
-
-//       return [key, points];
-//     })
-//   );
-
-//   return teamPoints;
-// };
-
-// export const sortNodesAccordingToPoints = () => {
-//   const { nodeGroups } = organiseNodesIntoTeams();
-
-//   const sortedNodes = Object.fromEntries(
-//     Object.entries(nodeGroups).sort((a, b) => {
-//       const aPoints = calculateTeamPoints(a[1]);
-//       const bPoints = calculateTeamPoints(b[1]);
-//       return bPoints.points - aPoints.points;
-//     })
-//   );
-
-//   return sortedNodes;
-// };
+};
