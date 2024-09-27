@@ -6,7 +6,7 @@ type NodeItemProps = {
   data: NodeDataWithStatus;
 };
 const NodeItem = ({ data }: NodeItemProps) => {
-  const { reachable, id, tips } = data;
+  const { id } = data;
 
   const color = StatusCofig[data.status as keyof typeof StatusCofig];
   return (

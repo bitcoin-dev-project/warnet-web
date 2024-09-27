@@ -1,8 +1,6 @@
 import path from "path";
 import { promises as fs } from "fs";
 import { NextRequest, NextResponse } from "next/server";
-// import { wsManager } from "@/lib/websocketManager";
-// import { io } from "@/app/api/socket/route";
 
 type ConfigData = Record<string, number>;
 
@@ -30,8 +28,8 @@ export async function POST(req: NextRequest) {
     // } 
     // wsManager.broadcast({ type: 'message', data: "Config saved successfully!" });
 
-    return NextResponse.json({ message: "Config saved successfully! Couldn't emit message", success: true }, { status: 200 });
+    return NextResponse.json({ message: "Config saved successfully!", success: true }, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ message: "Failed to save config", error }, { status: 500 });
+    return NextResponse.json({ message: "Failed to save config", error, success: false }, { status: 500 });
   }
 }

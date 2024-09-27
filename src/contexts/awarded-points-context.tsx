@@ -47,12 +47,13 @@ export const AwardedPointsProvider = ({
         body: JSON.stringify({ [stylePoints.name]: Number(stylePoints.score) }),
       });
 
-      const result = await response.json();
+      
       if (response.ok) {
         updateClientPoints({name: stylePoints.name, score: Number(stylePoints.score)});
         console.log("updated config result");
       } else {
-        alert("Error: " + result.message);
+        const result = await response.json();
+        console.log("Error: ", {result});
       }
       setStylePoints(defaultStylePoints)
     } catch (error) {
