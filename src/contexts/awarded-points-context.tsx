@@ -26,9 +26,7 @@ export const AwardedPointsProvider = ({
     score: ""
   }
   const [points, setPoints] = useState(initialInternalData.points);
-  const {data: internalData} = useInternalData({initialData: initialInternalData});
-
-  console.log("internalData at award context", {internalData})
+  const {data: internalData} = useInternalData({initialData: initialInternalData, shouldPoll: process.env.NODE_ENV !== "development"});
 
   const [stylePoints, setStylePoints] = useState(defaultStylePoints);
 
@@ -58,6 +56,7 @@ export const AwardedPointsProvider = ({
       setStylePoints(defaultStylePoints)
     } catch (error) {
       console.error("Failed to save config:", error);
+      setStylePoints(defaultStylePoints)
     }
   };
 

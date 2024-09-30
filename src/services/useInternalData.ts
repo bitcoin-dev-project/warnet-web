@@ -10,11 +10,11 @@ const getData = async (): Promise<InternalData> => {
     .catch((err) => err);
 };
 
-export const useInternalData = ({initialData}: {initialData: InternalData}) =>
+export const useInternalData = ({initialData, shouldPoll = true, pollInterval = 1000 * 3}: {initialData: InternalData, shouldPoll?: boolean, pollInterval?: number}) =>
   useQuery<InternalData, Error>({
     queryFn: () => getData(),
     queryKey: ["events", "points"],
     refetchOnWindowFocus: true,
-    refetchInterval: 1000 * 3, // 3 seconds
+    refetchInterval: shouldPoll ? pollInterval : 0, // 3 seconds default
     initialData: initialData,
   });

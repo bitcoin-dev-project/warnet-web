@@ -12,6 +12,7 @@ export async function POST(req: NextRequest) {
     const value = data[key];
 
     const filePath = path.join(process.cwd(), "data", "team-points.json");
+    const eventPath = path.join(process.cwd(), "data", "events.json");
     const existingPoints = await fs.readFile(filePath, "utf-8");
 
     const parseExistingPoints: ConfigData = JSON.parse(existingPoints);
@@ -21,6 +22,8 @@ export async function POST(req: NextRequest) {
 
     const updatedData = { ...newPoints };
     await fs.writeFile(filePath, JSON.stringify(updatedData, null, 2), "utf-8");
+    await fs.writeFile(eventPath, JSON.stringify({ message: `${value} points awarded to ${key}`, date: new Date().toISOString() }, null, 2), "utf-8");
+
 
     // if (io) {
     //   io.emit('update', {data: data});

@@ -11,10 +11,10 @@ const getData = async (): Promise<ForkObserverData> => {
     .catch((err) => err);
 };
 
-export const useForkObserverData = () =>
+export const useForkObserverData = ({shouldPoll = true, pollInterval = 1000 * 5}: {shouldPoll?: boolean, pollInterval?: number}) =>
   useQuery<ForkObserverData, Error>({
     queryFn: () => getData(),
     queryKey: ["fork-observer-data"],
     refetchOnWindowFocus: true,
-    refetchInterval: 1000 * 5, // 5 seconds
+    refetchInterval: shouldPoll ? pollInterval : 0, // 5 seconds default
   });

@@ -52,7 +52,7 @@ export const compileTeamNode = (teamNode: NodeData, latestTipHeight: number): No
       }
     }
 
-    const versionNumberString = version.split(":")[1].split("/")[0] ?? false;
+    const versionNumberString = getVersionNumber(version);
     if (versionNumberString) {
       const score_for_version = points_config.core_version[version] ?? 0 ;
         if (score_for_version) {
@@ -61,3 +61,7 @@ export const compileTeamNode = (teamNode: NodeData, latestTipHeight: number): No
     }
     return {...teamNode, ...extraStats};
 };
+
+export const getVersionNumber = (version: string) => {
+  return version.split(":")[1].split("/")[0] ?? false;
+}

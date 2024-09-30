@@ -27,6 +27,7 @@ const page = () => {
                 id=''
                 className='p-3 rounded-lg text-white border border-gray-500 w-full bg-[#0000007f] bg-gray-600'
                 onChange={(e) => updateStylePoints({ type: "name", value: e.target.value })}
+                value={stylePoints.name}
               >
                 <option value=''>Select a team</option>
                 {Object.keys(points).map((key, index) => (
