@@ -265,7 +265,7 @@
       "description": "A node. Just A node.",
       "implementation": "Bitcoin Core",
       "tips": [
-        { "hash": "7ac9fe1f90689940b90b39c25c1b3b01a02a66a1b12475c51a0f037fc831cd18", "status": "active", "height": 77 },
+        { "hash": "7ac9fe1f90689940b90b39c25c1b3b01a02a66a1b12475c51a0f037fc831cd18", "status": "active", "height": 80 },
         { "hash": "54cbe78299215174417b5c5751a57775cd59e76e677fd6147594118379f76f79", "status": "invalid", "height": 75 }
       ],
       "last_changed_timestamp": 1727107038,
@@ -316,7 +316,7 @@
       "name": "tank-0005",
       "description": "A node. Just A node.",
       "implementation": "Bitcoin Core",
-      "tips": [{ "hash": "74d650d0e6ce5fbff80f3979037d25919d5882b1c3218e2b02b071e64d9abfce", "status": "active", "height": 80 }],
+      "tips": [{ "hash": "74d650d0e6ce5fbff80f3979037d25919d5882b1c3218e2b02b071e64d9abfce", "status": "active", "height": 77 }],
       "last_changed_timestamp": 1727107058,
       "version": "/Satoshi:25.1.0/",
       "reachable": true
@@ -327,7 +327,7 @@
       "description": "A node. Just A node.",
       "implementation": "Bitcoin Core",
       "tips": [
-        { "hash": "74d650d0e6ce5fbff80f3979037d25919d5882b1c3218e2b02b071e64d9abfce", "status": "active", "height": 80 },
+        { "hash": "74d650d0e6ce5fbff80f3979037d25919d5882b1c3218e2b02b071e64d9abfce", "status": "active", "height": 76 },
         { "hash": "7ac9fe1f90689940b90b39c25c1b3b01a02a66a1b12475c51a0f037fc831cd18", "status": "valid-headers", "height": 77 }
       ],
       "last_changed_timestamp": 1727107058,

@@ -3,7 +3,6 @@ import { NodeDataWithStatus } from "@/types";
 import { StatusCofig, StatusCofigType } from "@/app/config";
 import { getVersionNumber } from "@/helpers";
 import ClockIcon from "@/components/icons/clock";
-import XIcon from "@/components/icons/xIcon";
 import SkullIcon from "./icons/skull";
 
 type NodeItemProps = {

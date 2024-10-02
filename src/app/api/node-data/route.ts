@@ -1,8 +1,15 @@
 import path from "path";
-import { promises as fs } from "fs";
+import { promises as fs, readFileSync } from "fs";
 import { NextRequest, NextResponse } from "next/server";
+import { getLatestTipHeight } from "@/helpers";
+import { ForkObserverData } from "@/types";
 
 // type ConfigData = Record<string, Record<string, number>>;
+
+let inMemoryData = readFileSync(
+  path.join(process.cwd(), "public", "header-and-teams.json"),
+  "utf-8"
+);
 
 const saveDataToJSONFile = async (data: any) => {
   try {
@@ -15,7 +22,7 @@ const saveDataToJSONFile = async (data: any) => {
 export async function GET(req: NextRequest) {
   try {
     if (!process.env.NEXT_FORK_OBSERVER_API) {
-      const file = await fs.readFile(
+      const file = inMemoryData ?? await fs.readFile(
         path.join(process.cwd(), "public", "header-and-teams.json"),
         "utf-8"
       );
@@ -29,15 +36,22 @@ export async function GET(req: NextRequest) {
       const data = JSON.parse(file);
       // data.nodes[1].reachable = !data.nodes[1].reachable;
 
-      // await saveDataToJSONFile(data);
+      // simulate increasing height
+      if (data.header_infos[15].height > 81) {
+        data.header_infos[15].height = 80;
+      } else {
+        data.header_infos[15].height += 1;
+      }
+      inMemoryData = JSON.stringify(data);
 
-      return NextResponse.json({ data, message: "Success" }, { status: 200 });
+      const { latestTipHeight } = getLatestTipHeight({ header_infos: data.header_infos }) ?? 0;
+
+      return NextResponse.json({ data: {...data, latestTipHeight} as ForkObserverData, message: "Success" }, { status: 200 });
     }
 
     const response = await fetch(process.env.NEXT_FORK_OBSERVER_API);
     const data = await response.json();
 
-    await saveDataToJSONFile(data);
 
     NextResponse.json({ data, message: "Success" }, { status: 200 });
   } catch (error: any) {

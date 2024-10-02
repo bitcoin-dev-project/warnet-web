@@ -14,6 +14,8 @@ export type Team = {
 export type ForkObserverData = {
   header_infos: HeaderInfoData[];
   nodes: NodeData[];
+  latestTipHeight: number;
+  events?: EVENT[];
 };
 
 export type NodeData = {

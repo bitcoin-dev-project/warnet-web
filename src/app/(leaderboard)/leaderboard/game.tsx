@@ -25,18 +25,21 @@ const Game = ({ gameConfig }: GameProps) => {
   const { teams } = gameConfig;
   const { data, isLoading, error } = useForkObserverData({
     shouldPoll: true,
+    teams
   });
   const {
     internalData: { points: awardedPoints },
   } = useAwardedPointsContext();
-  console.log("awardedPoints at game", { awardedPoints });
+
+  console.log("height at 15", data?.header_infos[15]?.height);
+
   // const [socket, setSocket] = useState<Socket | null>(null);
 
   // console.log("data from fork observer", data);
-  const header_infos = data?.header_infos || [];
+  // const header_infos = data?.header_infos || [];
   const nodes = data?.nodes || [];
 
-  const { latestTipHeight } = getLatestTipHeight({ header_infos });
+  const latestTipHeight = data?.latestTipHeight || 0;
 
   const formatNode = (teamNode: NodeData) => {
     return compileTeamNode(teamNode, latestTipHeight);
@@ -78,8 +81,8 @@ const Game = ({ gameConfig }: GameProps) => {
   return (
     <div className={`flex flex-col min-h-full gap-4`}>
 
-      <div className="rounded-lg flex justify-stretch min-h-[507px] gap-4 ">
-        <ActivityFeed feed={[]} />
+      <div className="rounded-lg flex justify-stretch max-h-[507px] gap-4 ">
+        <ActivityFeed feed={data?.events ?? []} currentTip={latestTipHeight} />
         <Leaderboard teamPoints={teamPoints} awardedPoints={awardedPoints} />
       </div>
 
