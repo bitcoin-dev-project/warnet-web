@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useMemo } from "react";
 import styles from "@/components/styles.module.css";
 import {
   LeaderBoardCards,
@@ -25,13 +25,20 @@ const Game = ({ gameConfig }: GameProps) => {
   const { teams } = gameConfig;
   const { data, isLoading, error } = useForkObserverData({
     shouldPoll: true,
-    teams
+    teams,
   });
   const {
-    internalData: { points: awardedPoints },
+    internalData: { points: awardedPoints, events: eventsFromAwardedPoints },
   } = useAwardedPointsContext();
 
-  console.log("height at 15", data?.header_infos[15]?.height);
+  const feedEvents = useMemo(() => {
+    let feed = data?.events ?? [];
+    if (eventsFromAwardedPoints?.length) {
+      feed = [...feed, ...eventsFromAwardedPoints];
+    }
+    feed = feed.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    return feed;
+  }, [eventsFromAwardedPoints, data?.events]);
 
   // const [socket, setSocket] = useState<Socket | null>(null);
 
@@ -80,9 +87,8 @@ const Game = ({ gameConfig }: GameProps) => {
 
   return (
     <div className={`flex flex-col min-h-full gap-4`}>
-
       <div className="rounded-lg flex justify-stretch max-h-[507px] gap-4 ">
-        <ActivityFeed feed={data?.events ?? []} currentTip={latestTipHeight} />
+        <ActivityFeed feed={feedEvents ?? []} currentTip={latestTipHeight} />
         <Leaderboard teamPoints={teamPoints} awardedPoints={awardedPoints} />
       </div>
 

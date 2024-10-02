@@ -1,6 +1,7 @@
 import path from "path";
 import { promises as fs } from "fs";
 import { NextRequest, NextResponse } from "next/server";
+import { EVENT } from "@/types";
 
 type ConfigData = Record<string, number>;
 
@@ -22,7 +23,13 @@ export async function POST(req: NextRequest) {
 
     const updatedData = { ...newPoints };
     await fs.writeFile(filePath, JSON.stringify(updatedData, null, 2), "utf-8");
-    await fs.writeFile(eventPath, JSON.stringify({ message: `${value} points awarded to ${key}`, date: new Date().toISOString() }, null, 2), "utf-8");
+
+    const existingEvents = await fs.readFile(eventPath, "utf-8");
+    const parsedEvents: EVENT[] = JSON.parse(existingEvents);
+
+    const newEvents = [{ message: `${value} points awarded to ${key}`, date: new Date().toISOString() }, ...parsedEvents];
+
+    await fs.writeFile(eventPath, JSON.stringify(newEvents, null, 2), "utf-8");
 
 
     // if (io) {
@@ -33,6 +40,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ message: "Config saved successfully!", success: true }, { status: 200 });
   } catch (error) {
+    console.log(error)
     return NextResponse.json({ message: "Failed to save config", error, success: false }, { status: 500 });
   }
 }

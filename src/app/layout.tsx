@@ -49,16 +49,15 @@ const initialiseTeamPoints = () => {
 };
 
 const initialiseEvents = (): EVENT[] => {
-  const defaultEventsJson = {
-    events: [{ message: "initial event", date: "2024-09-25T12:00:00.000Z" }],
-  };
+  const defaultEventsJson = [{ message: "initial event", date: "2024-09-25T12:00:00.000Z" }];
+
   const eventsPath = path.join(process.cwd(), "data", "events.json");
   if (fs.existsSync(eventsPath)) {
     try {
       const eventsJson = JSON.parse(fs.readFileSync(eventsPath, "utf-8"));
-      return eventsJson.events;
+      return eventsJson;
     } catch (error) {
-      return defaultEventsJson.events;
+      return defaultEventsJson;
     }
   } else {
     fs.writeFileSync(
@@ -66,7 +65,7 @@ const initialiseEvents = (): EVENT[] => {
       JSON.stringify(defaultEventsJson, null, 2),
       "utf-8"
     );
-    return defaultEventsJson.events
+    return defaultEventsJson
   }
 };
 

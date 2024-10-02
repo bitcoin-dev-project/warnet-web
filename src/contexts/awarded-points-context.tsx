@@ -26,7 +26,7 @@ export const AwardedPointsProvider = ({
     score: ""
   }
   const [points, setPoints] = useState(initialInternalData.points);
-  const {data: internalData} = useInternalData({initialData: initialInternalData, shouldPoll: process.env.NODE_ENV !== "development"});
+  const {data: internalData} = useInternalData({initialData: initialInternalData, shouldPoll: true});
 
   const [stylePoints, setStylePoints] = useState(defaultStylePoints);
 
@@ -48,7 +48,6 @@ export const AwardedPointsProvider = ({
       
       if (response.ok) {
         updateClientPoints({name: stylePoints.name, score: Number(stylePoints.score)});
-        console.log("updated config result");
       } else {
         const result = await response.json();
         console.log("Error: ", {result});
@@ -61,10 +60,8 @@ export const AwardedPointsProvider = ({
   };
 
   const updateClientPoints = ({name, score}: {name: string, score: number}) => {
-    console.log({name, score});
     const newPoints = JSON.parse(JSON.stringify(points));
     newPoints[name] = (newPoints[name] ?? 0) + score;
-    console.log({newPoints})
     setPoints({...newPoints});
   }
 

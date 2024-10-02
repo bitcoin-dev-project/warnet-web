@@ -32,19 +32,15 @@ export const useForkObserverData = ({
     refetchIntervalInBackground: true,
     structuralSharing: (prevData, nextData): ForkObserverData => {
       try {
-        const events = calculateEventFromDiff(
+        const generatedEvents = calculateEventFromDiff(
           prevData as ForkObserverData,
           nextData as ForkObserverData,
           teams
         );
         const combinedDataWithEvents = {
           ...nextData as ForkObserverData,
-          events: [...events, ...((prevData as ForkObserverData)?.events ?? [])].slice(0, 20),
+          events: [...generatedEvents, ...((prevData as ForkObserverData)?.events ?? [])].slice(0, 20),
         };
-        // console.log("aggEvents", combinedDataWithEvents.events);
-        console.log("oldTipHeight", (prevData as ForkObserverData).latestTipHeight);
-        console.log("newTipHeight", (nextData as ForkObserverData).latestTipHeight);
-        console.log("aggEvents", combinedDataWithEvents.events.slice(0, 5));
   
         return combinedDataWithEvents;
       } catch (error) {
@@ -59,9 +55,10 @@ const calculateEventFromDiff = (
   nextData: ForkObserverData,
   teams: Team[]
 ) => {
-  if (!prevData || !nextData) return [];
-
   const events: EVENT[] = [];
+
+  if (!prevData || !nextData) return events;
+
   const prevNodes = prevData.nodes;
   const nextNodes = nextData.nodes;
   const prevTipHeight = prevData.latestTipHeight;

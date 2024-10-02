@@ -2,7 +2,7 @@ import path from "path";
 import { promises as fs, readFileSync } from "fs";
 import { NextRequest, NextResponse } from "next/server";
 import { getLatestTipHeight } from "@/helpers";
-import { ForkObserverData } from "@/types";
+import { EVENT, ForkObserverData } from "@/types";
 
 // type ConfigData = Record<string, Record<string, number>>;
 
@@ -34,6 +34,7 @@ export async function GET(req: NextRequest) {
       }
 
       const data = JSON.parse(file);
+      // simulate node reachability
       // data.nodes[1].reachable = !data.nodes[1].reachable;
 
       // simulate increasing height
@@ -46,7 +47,7 @@ export async function GET(req: NextRequest) {
 
       const { latestTipHeight } = getLatestTipHeight({ header_infos: data.header_infos }) ?? 0;
 
-      return NextResponse.json({ data: {...data, latestTipHeight} as ForkObserverData, message: "Success" }, { status: 200 });
+      return NextResponse.json({ data: {...data, latestTipHeight } as ForkObserverData, message: "Success" }, { status: 200 });
     }
 
     const response = await fetch(process.env.NEXT_FORK_OBSERVER_API);

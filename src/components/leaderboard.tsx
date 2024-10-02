@@ -10,8 +10,8 @@ const Leaderboard = ({ teamPoints, awardedPoints }: LeaderboardProps) => {
   const pointsByTeam = Object.entries(teamPoints).map(([key, value]) => ({
     team: key,
     points: value,
-    awardedPoints: awardedPoints[key] ?? 0,
-    totalPoints: value + (awardedPoints[key] ?? 0),
+    awardedPoints: awardedPoints?.[key] ?? 0,
+    totalPoints: value + (awardedPoints?.[key] ?? 0),
   }));
   const sortedByPoints = pointsByTeam.sort(
     (a, b) => b.totalPoints - a.totalPoints
