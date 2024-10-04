@@ -42,7 +42,6 @@ const Game = ({ gameConfig }: GameProps) => {
 
   // const [socket, setSocket] = useState<Socket | null>(null);
 
-  // console.log("data from fork observer", data);
   // const header_infos = data?.header_infos || [];
   const nodes = data?.nodes || [];
 

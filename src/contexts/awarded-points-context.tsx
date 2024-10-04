@@ -1,14 +1,15 @@
 "use client"
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useInternalData } from "@/services/useInternalData";
-import { InternalData } from "@/types";
+import { InternalData, StylePoints } from "@/types";
+
+type updateStylePointsType = ({type, value}: {type: "name" | "score" | "reason", value: string | number}) => void;
 
 type AwardedPointsContext = {
   internalData: InternalData;
   points: Record<string, number>;
-  stylePoints: {name: string, score: string};
-  updateStylePoints: ({type, value}: {type: "name" | "score", value: string}) => void;
+  stylePoints: StylePoints;
+  updateStylePoints: updateStylePointsType;
   savePoints: () => void;
 }
 
@@ -21,33 +22,35 @@ export const AwardedPointsProvider = ({
   children: React.ReactNode;
   initialInternalData: InternalData;
 }) => {
-  const defaultStylePoints = {
+  const defaultStylePoints: StylePoints = {
     name: "",
-    score: ""
+    score: 0,
+    reason: ""
   }
   const [points, setPoints] = useState(initialInternalData.points);
   const {data: internalData} = useInternalData({initialData: initialInternalData, shouldPoll: true});
 
   const [stylePoints, setStylePoints] = useState(defaultStylePoints);
 
-  const updateStylePoints = ({type, value}: {type: "name" | "score", value: string}) => {
+  const updateStylePoints: updateStylePointsType = ({type, value}) => {
     setStylePoints({...stylePoints, [type]: value});
   }
 
   const handleSaveConfig = async () => {
-    updateClientPoints({name: stylePoints.name, score: Number(stylePoints.score)});
+    const {name, score, reason} = stylePoints;
+    
     try {
       const response = await fetch("/api/save-config", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ [stylePoints.name]: Number(stylePoints.score) }),
+        body: JSON.stringify({ name, score, reason }),
       });
 
       
       if (response.ok) {
-        updateClientPoints({name: stylePoints.name, score: Number(stylePoints.score)});
+        updateClientPoints({name, score});
       } else {
         const result = await response.json();
         console.log("Error: ", {result});

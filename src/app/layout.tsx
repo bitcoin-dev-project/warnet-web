@@ -49,7 +49,7 @@ const initialiseTeamPoints = () => {
 };
 
 const initialiseEvents = (): EVENT[] => {
-  const defaultEventsJson = [{ message: "initial event", date: "2024-09-25T12:00:00.000Z" }];
+  const defaultEventsJson: EVENT[] = [{ message: "initial event", date: "2024-09-25T12:00:00.000Z" }];
 
   const eventsPath = path.join(process.cwd(), "data", "events.json");
   if (fs.existsSync(eventsPath)) {

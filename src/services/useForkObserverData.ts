@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import type { EVENT, ForkObserverData, Team } from "@/types";
 import next from "next";
-import { getConfig } from "@/app/config";
+import { getConfig, StatusConfig, StatusConfigType } from "@/app/config";
 import { isNodeLagging } from "@/helpers";
 
 const getData = async (): Promise<ForkObserverData> => {
@@ -88,10 +88,19 @@ const calculateEventFromDiff = (
         config
       );
 
-      if (isNextLagging !== isPrevLagging) {
+      // if (isNextLagging !== isPrevLagging) {
+      //   events.push({
+      //     message: `${node.name} is at height ${nextLatestTip.height} and is ${isNextLagging ? "now" : "not"} lagging ${isNextLagging ? `behind by ${nextTipHeight - nextLatestTip.height} blocks` : ""}`,
+      //     date: new Date().toISOString(),
+      //   });
+      // }
+
+      if (isNextLagging && !isPrevLagging) {
         events.push({
-          message: `${node.name} is at height ${nextLatestTip.height} and is ${isNextLagging ? "now" : "not"} lagging ${isNextLagging ? `behind by ${nextTipHeight - nextLatestTip.height} blocks` : ""}`,
+          message: `${node.name} is at height ${nextLatestTip.height} and is now lagging behind by ${nextTipHeight - nextLatestTip.height} blocks`,
+          type: "lagging",
           date: new Date().toISOString(),
+          // status: "lagging",
         });
       }
 
@@ -101,6 +110,7 @@ const calculateEventFromDiff = (
       if (prevReachable !== nextReachable) {
         events.push({
           message: `${node.name} is now ${nextReachable ? "reachable" : "unreachable"}`,
+          type: nextReachable ? "reachable" : "unreachable",
           date: new Date().toISOString(),
         });
       }

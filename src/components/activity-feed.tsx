@@ -2,10 +2,18 @@ import React from "react";
 import { getRelativeTimeString } from "@/helpers";
 import { EVENT } from "@/types";
 import { motion, AnimatePresence } from "framer-motion";
+import { StatusConfig } from "@/app/config";
 
 type ActivityFeedProps = {
   feed: EVENT[];
   currentTip: number;
+};
+
+const EventColorConfig = {
+  lagging: "text-orange-300 font-medium",
+  unreachable: "text-red-400 font-medium",
+  reachable: "",
+  "style-points": "text-green-400 font-medium",
 };
 
 const OnlineIndicator = () => {
@@ -34,23 +42,37 @@ const ActivityFeed = ({ feed, currentTip }: ActivityFeedProps) => {
             <motion.div
               key={`feed-${item.date}-${item.message}`}
               initial={
-                index === 0 ? { opacity: 0, y: -20 } : { opacity: 1, y: 0 }
+                index === 0 ? { opacity: 0, y: -30 } : { opacity: 1, y: 0 }
               }
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 20 }}
+              exit={{ opacity: 0, y: -10 }}
               transition={{
                 type: "spring",
-                stiffness: 500,
-                damping: 30,
+                stiffness: 100,
+                damping: 10,
                 mass: 1,
               }}
-              className=""
             >
               <div
                 key={`${item.message}-${index}`}
                 className="flex gap-2 items-center text-gray-300 text-sm justify-between w-full"
               >
-                <p>{item.message}</p>
+                <div>
+                  <p
+                    className={`${item?.type ? EventColorConfig[item?.type] : ""}`}
+                  >
+                    {item.message}
+                  </p>
+                  {item.meta ? (
+                    <ul className="list-disc ml-4">
+                      <li>
+                        {item.meta.map((meta, index) => (
+                          <p key={`${index}`}>{meta}</p>
+                        ))}
+                      </li>
+                    </ul>
+                  ) : null}
+                </div>
                 <p>{getRelativeTimeString(item.date)}</p>
               </div>
             </motion.div>

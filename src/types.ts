@@ -1,4 +1,4 @@
-import { StatusCofigType } from "./app/config";
+import { StatusConfigType } from "./app/config";
 
 export type GameConfig = {
   teams: Team[];
@@ -29,7 +29,7 @@ export type NodeData = {
   reachable: boolean;
 };
 
-export type NodeDataWithStatus = NodeData & {status: StatusCofigType, score: number};
+export type NodeDataWithStatus = NodeData & {status: StatusConfigType, score: number};
 
 export type HeaderInfoData = {
   id: number;
@@ -46,12 +46,22 @@ export type HeaderInfoData = {
 };
 
 export type AwardedTeamPoints = Record<string, number>;
+
+type EventType = StatusConfigType | "style-points";
 export type EVENT = {
   message: string;
   date: string;
+  type?: EventType;
+  meta?: string[];
 }
 
 export type InternalData = {
   points: AwardedTeamPoints;
   events: EVENT[];
+}
+
+export type StylePoints = {
+  name: string;
+  score: number;
+  reason?: string;
 }

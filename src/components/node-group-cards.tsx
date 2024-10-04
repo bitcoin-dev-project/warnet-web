@@ -1,6 +1,6 @@
 import React from "react";
 import { NodeDataWithStatus } from "@/types";
-import { StatusCofig, StatusCofigType } from "@/app/config";
+import { StatusConfig, StatusConfigType } from "@/app/config";
 import { getVersionNumber } from "@/helpers";
 import ClockIcon from "@/components/icons/clock";
 import SkullIcon from "./icons/skull";
@@ -10,7 +10,7 @@ type NodeItemProps = {
   latestTipHeight: number;
 };
 
-const Badge = ({status, blocksBehind}: {status: StatusCofigType, blocksBehind: number}) => {
+const Badge = ({status, blocksBehind}: {status: StatusConfigType, blocksBehind: number}) => {
   switch (status) {
     case "lagging":
       return (
@@ -39,7 +39,7 @@ const NodeItem = ({ data, latestTipHeight }: NodeItemProps) => {
 
   const blocksBehind = latestTipHeight - tips[0].height;
 
-  const color = StatusCofig[data.status as keyof typeof StatusCofig];
+  const color = StatusConfig[data.status as keyof typeof StatusConfig];
 
   return (
     <div

@@ -1,6 +1,6 @@
 import { NodeData } from "@/node";
 import { GameConfig, HeaderInfoData, NodeDataWithStatus } from "@/types";
-import { StatusCofigType } from "@/app/config";
+import { StatusConfigType } from "@/app/config";
 import { getConfig } from "@/app/config";
 
 export const getLatestTipHeight = ({header_infos}: {header_infos: HeaderInfoData[] | []}) => {
@@ -34,7 +34,7 @@ export const compileTeamNode = (teamNode: NodeData, latestTipHeight: number): No
   const { points_config, config } = getConfig();
   const { reachable, tips, version } = teamNode;
     const extraStats: {
-      status: StatusCofigType;
+      status: StatusConfigType;
       score: number;
     } = {
       status: "reachable",
