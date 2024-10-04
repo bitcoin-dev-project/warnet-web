@@ -1,9 +1,17 @@
 [
   {
+    "message": "4 points awarded to andreas",
+    "type": "style-points",
+    "meta": [
+      "sybil attack"
+    ],
+    "date": "2024-10-04T16:17:52.952Z"
+  },
+  {
     "message": "5 points awarded to solomon",
     "type": "style-points",
     "meta": [
-      "man in the middle"
+      "eclipse attack"
     ],
     "date": "2024-10-04T11:23:14.517Z"
   },

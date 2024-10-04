@@ -27,18 +27,25 @@ const Game = ({ gameConfig }: GameProps) => {
     shouldPoll: true,
     teams,
   });
-  const {
-    internalData: { points: awardedPoints, events: eventsFromAwardedPoints },
-  } = useAwardedPointsContext();
+  const { internalData } = useAwardedPointsContext();
+  // const {
+  //   internalData: { points: awardedPoints, events: eventsFromAwardedPoints },
+  // } = useAwardedPointsContext();
+  const eventsFromAwardedPoints = internalData?.events ?? [];
+  const awardedPoints = internalData?.points ?? {};
+  const generatedEvents = data?.events ?? []
+  const feedEvents = [...generatedEvents, ...eventsFromAwardedPoints]
+  feedEvents.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-  const feedEvents = useMemo(() => {
-    let feed = data?.events ?? [];
-    if (eventsFromAwardedPoints?.length) {
-      feed = [...feed, ...eventsFromAwardedPoints];
-    }
-    feed = feed.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-    return feed;
-  }, [eventsFromAwardedPoints, data?.events]);
+  // const feedEvents = useMemo(() => {
+  //   let feed = data?.events ?? [];
+  //   const eventsFromAwardedPoints = internalData?.events ?? [];
+  //   if (eventsFromAwardedPoints?.length) {
+  //     feed = [...feed, ...eventsFromAwardedPoints];
+  //   }
+  //   feed = feed.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  //   return feed;
+  // }, [internalData?.events, data?.events]);
 
   // const [socket, setSocket] = useState<Socket | null>(null);
 
@@ -88,7 +95,7 @@ const Game = ({ gameConfig }: GameProps) => {
     <div className={`flex flex-col min-h-full gap-4`}>
       <div className="rounded-lg flex justify-stretch max-h-[507px] gap-4 ">
         <ActivityFeed feed={feedEvents ?? []} currentTip={latestTipHeight} />
-        <Leaderboard teamPoints={teamPoints} awardedPoints={awardedPoints} />
+        <Leaderboard teamPoints={teamPoints} awardedPoints={internalData?.points ?? {}} />
       </div>
 
       {/* TEAMS */}

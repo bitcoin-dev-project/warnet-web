@@ -1,12 +1,12 @@
 "use client"
 import React, { useState } from "react";
 import { useInternalData } from "@/services/useInternalData";
-import { InternalData, StylePoints } from "@/types";
+import { AwardedTeamPoints, InternalData, StylePoints } from "@/types";
 
 type updateStylePointsType = ({type, value}: {type: "name" | "score" | "reason", value: string | number}) => void;
 
 type AwardedPointsContext = {
-  internalData: InternalData;
+  internalData: InternalData | undefined;
   points: Record<string, number>;
   stylePoints: StylePoints;
   updateStylePoints: updateStylePointsType;
@@ -17,20 +17,26 @@ export const awardedPointsContext = React.createContext<AwardedPointsContext>(nu
 
 export const AwardedPointsProvider = ({
   children,
-  initialInternalData,
+  // initialInternalData,
 }: {
   children: React.ReactNode;
-  initialInternalData: InternalData;
+  // initialInternalData: InternalData;
 }) => {
   const defaultStylePoints: StylePoints = {
     name: "",
     score: 0,
     reason: ""
   }
-  const [points, setPoints] = useState(initialInternalData.points);
-  const {data: internalData} = useInternalData({initialData: initialInternalData, shouldPoll: true});
+  const [points, setPoints] = useState<AwardedTeamPoints>({});
+  // const [points, setPoints] = useState(initialInternalData.points);
+  const {data: internalData} = useInternalData({ shouldPoll: true});
+  // const {data: internalData} = useInternalData({initialData: initialInternalData, shouldPoll: true});
 
   const [stylePoints, setStylePoints] = useState(defaultStylePoints);
+
+  if (Object.keys(points).length === 0 && Object.keys(internalData?.points ?? {}).length > 0) {
+    setPoints(internalData!.points);
+  }
 
   const updateStylePoints: updateStylePointsType = ({type, value}) => {
     setStylePoints({...stylePoints, [type]: value});

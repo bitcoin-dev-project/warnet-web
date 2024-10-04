@@ -27,7 +27,8 @@ const OnlineIndicator = () => {
 
 const ActivityFeed = ({ feed, currentTip }: ActivityFeedProps) => {
   return (
-    <section className="flex flex-col gap-4 w-full text-white">
+    <section className="relative flex flex-col gap-4 w-full text-white">
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-[rgba(0,0,0,0.1)] via-50% to-[rgba(0,0,0,0.4)] z-10 pointer-events-none"></div>
       <div className="flex justify-between items-center">
         <h2 className="font-medium text-2xl">Activity Feed</h2>
         <div className="text-base">
@@ -35,7 +36,7 @@ const ActivityFeed = ({ feed, currentTip }: ActivityFeedProps) => {
           <span className="text-green-400 font-bold">{currentTip}</span>
         </div>
       </div>
-      <section className="relative flex flex-col gap-4 p-4 pt-[60px] rounded-lg w-full h-full overflow-scroll border border-neutral-800 bg-zinc-800/30 from-inherit bg-gradient-to-b backdrop-blur-2xl">
+      <section className="relative flex flex-col gap-4 p-4 pt-[48px] rounded-lg w-full h-full overflow-scroll border border-neutral-800">
         <OnlineIndicator />
         <AnimatePresence>
           {feed.map((item, index) => (

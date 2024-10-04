@@ -83,7 +83,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${ibm.variable} font-ibm`}>
         <QueryProvider>
-          <AwardedPointsProvider initialInternalData={internalData}>{children}</AwardedPointsProvider>
+          <AwardedPointsProvider>{children}</AwardedPointsProvider>
         </QueryProvider>
       </body>
     </html>

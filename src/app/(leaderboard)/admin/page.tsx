@@ -6,7 +6,7 @@ import { useAwardedPointsContext } from "@/contexts/awarded-points-context";
 import { motion } from "framer-motion";
 
 const page = () => {
-  const { points, internalData, stylePoints, updateStylePoints, savePoints } =
+  const { points, stylePoints, updateStylePoints, savePoints } =
     useAwardedPointsContext();
 
   return (
