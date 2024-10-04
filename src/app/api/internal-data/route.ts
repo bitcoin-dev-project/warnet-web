@@ -18,6 +18,7 @@ export async function GET(req: NextRequest) {
     // data.nodes[1].reachable = !data.nodes[1].reachable;
 
     // await saveDataToJSONFile(data);
+    console.log(process.cwd())
 
     return NextResponse.json({ data, message: "Success" }, { status: 200 });
   } catch (error: any) {
