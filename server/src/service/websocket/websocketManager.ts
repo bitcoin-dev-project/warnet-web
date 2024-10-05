@@ -1,6 +1,7 @@
 import { WebSocket, WebSocketServer } from 'ws';
 import { Server as HttpServer } from 'http';
 import { parse } from 'url';
+import { WebsocketMessage } from '../../../shared/types';
 
 class WebSocketManager {
   private wss: WebSocketServer | null = null;
@@ -34,8 +35,8 @@ class WebSocketManager {
       console.log('New WebSocket connection established');
       this.clients.add(ws);
 
-      ws.on('message', (message: string) => {
-        console.log('Received message:', message);
+      ws.on('message', (message: WebsocketMessage) => {
+        // this.broadcast(message);
       });
 
       ws.on('close', () => {
@@ -51,9 +52,9 @@ class WebSocketManager {
     console.log('WebSocketServer initialization complete');
   }
 
-  broadcast(message: any) {
+  broadcast(message: WebsocketMessage) {
     const data = JSON.stringify(message);
-    console.log(`Broadcasting message to ${this.clients.size} clients:`, data);
+    console.log(`Broadcasting message to ${this.clients.size} clients:`, message.message);
     this.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
         client.send(data);
