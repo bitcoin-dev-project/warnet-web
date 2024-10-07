@@ -10,6 +10,7 @@ export type GameConfig = {
   teams: Team[];
   points_config: { points_per_lagging_node: number; points_per_unreachable_node: number, core_version: Record<string, number> };
   config: { blocks_behind_before_considered_lagging: number };
+  fork_observer_api: string;
 };
 
 export type Team = {
@@ -56,9 +57,12 @@ export type HeaderInfoData = {
 };
 
 export type AwardedTeamPoints = Record<string, number>;
+type EventType = StatusConfigType | "style-points";
 export type EVENT = {
   message: string;
   date: string;
+  type?: EventType;
+  meta?: string[];
 }
 
 export type InternalData = {

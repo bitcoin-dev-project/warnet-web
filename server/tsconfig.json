@@ -8,6 +8,13 @@
     "skipLibCheck": true,
     "outDir": "dist",
     "moduleResolution": "node",
+    "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "types": ["node", "express"]
   },
   "include": ["src/**/*"],
   "compileOnSave": true,

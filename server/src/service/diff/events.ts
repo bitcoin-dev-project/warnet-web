@@ -1,7 +1,7 @@
-import { EVENT, ForkObserverData, ForkObserverResponseData, GameConfig } from "../../../shared/types";
-import { getConfig } from "../../config";
+import { EVENT, ForkObserverResponseData, GameConfig } from "../../../shared/types";
 import { isNodeLagging } from "../../helpers";
 import { internalDataCache } from "../cache/cacheManager";
+import { getGameConfig } from "../file";
 import { cacheDataToForkObserverResponseData } from "../transformers";
 
 export const generateEvents = () => {
@@ -15,7 +15,7 @@ export const generateEvents = () => {
   const prevResData = cacheDataToForkObserverResponseData(prevData);
   const nextResData = cacheDataToForkObserverResponseData(nextData);
 
-  const rootConfig = getConfig();
+  const rootConfig = getGameConfig();
 
   if (rootConfig instanceof Error) {
     return new Error("Error getting config");

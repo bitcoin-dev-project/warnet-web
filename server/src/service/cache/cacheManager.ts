@@ -32,6 +32,12 @@ class CacheManager {
   }
 
   update(data: CacheData) {
+    if (this.cache.old === null) {
+      this.set("old", data);
+      this.set("new", data);
+      return;
+    }
+
     this.set("old", this.cache.new);
     this.set("new", data);
   }

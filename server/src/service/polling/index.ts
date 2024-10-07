@@ -1,10 +1,4 @@
-import { websocketMessageType } from "../../../shared/types";
-import { internalDataCache } from "../cache/cacheManager";
-import { transformToCacheData } from "../cache/utils";
-import { isSameHash } from "../diff/compareHash";
-import { generateEvents } from "../diff/events";
-import { wsManager } from "../websocket/websocketManager";
-import { fetchData } from "./fetch";
+import { core } from "../../domain/core";
 
 class PollingService {
   private interval: NodeJS.Timeout | null = null;
@@ -16,7 +10,7 @@ class PollingService {
 
   start() {
     this.interval = setInterval(() => {
-      this.core();
+      core();
     }, this.pollingInterval);
   }
 
@@ -27,31 +21,8 @@ class PollingService {
     }
   }
 
-  async core() {
-    const data = await fetchData();
-    if (data instanceof Error) {
-      console.log("Error fetching data:", data.message);
-      return;
-    }
-    // move code in block to db repository
-    const isSameData = isSameHash(data);
-    if (isSameData) {
-      console.log("Same data");
-      return;
-    }
-    const newCacheData = transformToCacheData(data);
-    internalDataCache.update(newCacheData);
-    wsManager.broadcast({
-      type: websocketMessageType.ForkObserverData,
-      message: "ForkObserverData",
-    })
-    // end of block
-    const events = generateEvents();
-    if (events instanceof Error) {
-      console.log("Error generating events:", events.message);
-      return;
-    }
-    // implement save events to database
+  isRunning() {
+    return this.interval !== null;
   }
 }
 
