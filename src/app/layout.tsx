@@ -2,13 +2,12 @@ import "./globals.css";
 import * as fs from "fs";
 import type { Metadata } from "next";
 import { Inter, IBM_Plex_Sans } from "next/font/google";
-import CONFIG_DATA from "../../public/config.json";
 import QueryProvider from "@/app/providers";
 import { AwardedPointsProvider } from "@/contexts/awarded-points-context";
 import { EVENT, InternalData } from "@/types";
 import path from "path";
-
-const { teams } = CONFIG_DATA;
+import { createTeamPoints } from "@/helpers";
+import { getConfig } from "@/config/filesystem";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const ibm = IBM_Plex_Sans({
@@ -24,27 +23,27 @@ export const metadata: Metadata = {
   description: "Warnet",
 };
 
-const initialiseTeamPoints = () => {
-  const teamsJson: { [key: string]: number } = {};
-
-  teams.forEach((team) => {
-    teamsJson[team.name] = 0;
-  });
-
+const initialiseTeamPoints = async () => {
+  const config = await getConfig();
+  if (config instanceof Error) {
+    return ;
+  }
+  const {teams} = config;
+  const teamPoints = createTeamPoints(teams);
   const teamPath = path.join(process.cwd(), "data", "team-points.json");
   if (fs.existsSync(teamPath)) {
     try {
       return JSON.parse(fs.readFileSync(teamPath, "utf-8"));
     } catch (error) {
-      return teamsJson;
+      return teamPoints;
     }
   } else {
     fs.writeFileSync(
       teamPath,
-      JSON.stringify(teamsJson, null, 2),
+      JSON.stringify(teamPoints, null, 2),
       "utf-8"
     );
-    return teamsJson;
+    return teamPoints;
   }
 };
 
@@ -69,16 +68,18 @@ const initialiseEvents = (): EVENT[] => {
   }
 };
 
-const internalData: InternalData = {
-  points: initialiseTeamPoints(),
-  events: initialiseEvents(),
-}
+// const internalData: InternalData = {
+//   points: initialiseTeamPoints(),
+//   events: initialiseEvents(),
+// }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  await initialiseTeamPoints();
+  await initialiseEvents();
   return (
     <html lang="en">
       <body className={`${inter.variable} ${ibm.variable} font-ibm`}>

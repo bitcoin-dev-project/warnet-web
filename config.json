@@ -51,5 +51,7 @@
 
   "config": {
     "blocks_behind_before_considered_lagging": 5
-  }
+  },
+
+  "fork_observer_api": ""
 }

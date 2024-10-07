@@ -4,6 +4,7 @@ export type GameConfig = {
   teams: Team[];
   points_config: { points_per_lagging_node: number; points_per_unreachable_node: number, core_version: Record<string, number> };
   config: { blocks_behind_before_considered_lagging: number };
+  fork_observer_api: string;
 };
 
 export type Team = {

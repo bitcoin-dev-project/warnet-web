@@ -1,7 +1,6 @@
 import { NodeData } from "@/node";
 import { GameConfig, HeaderInfoData, NodeDataWithStatus } from "@/types";
 import { StatusConfigType } from "@/app/config";
-import { getConfig } from "@/app/config";
 
 export const getLatestTipHeight = ({header_infos}: {header_infos: HeaderInfoData[] | []}) => {
   const latestTipHeight = Math.max(...header_infos.map((item) => item?.height ?? 0));
@@ -30,8 +29,8 @@ export const organiseNodesIntoTeams = <K>({nodes, teams, formatNode}: {nodes: No
   return { nodeGroups };
 };
 
-export const compileTeamNode = (teamNode: NodeData, latestTipHeight: number): NodeDataWithStatus => {
-  const { points_config, config } = getConfig();
+export const compileTeamNode = (teamNode: NodeData, latestTipHeight: number, gameConfig: GameConfig): NodeDataWithStatus => {
+  const { points_config, config } = gameConfig;
   const { reachable, tips, version } = teamNode;
     const extraStats: {
       status: StatusConfigType;
@@ -71,6 +70,17 @@ export const getVersionNumber = (version: string) => {
 export const isNodeLagging = (nodeHeight: number, latestTipHeight: number, config: GameConfig["config"]) => {
   return nodeHeight <= latestTipHeight - config.blocks_behind_before_considered_lagging;
 }
+
+export const createTeamPoints = (teams: GameConfig["teams"]) => {
+  const teamsJson: { [key: string]: number } = {};
+
+  teams.forEach((team) => {
+    teamsJson[team.name] = 0;
+  });
+  
+  return teamsJson;
+};
+
 
 type RelativeTimeUnit = Intl.RelativeTimeFormatUnit;
 interface TimeUnit {

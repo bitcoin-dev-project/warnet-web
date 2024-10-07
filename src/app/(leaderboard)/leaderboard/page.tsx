@@ -1,11 +1,13 @@
 import React from "react";
 import Game from "./game";
-import { GameConfig } from "@/types";
-import CONFIG_DATA from "@/public/config.json";
-import Wrapper from "@/components/layout/wrapper";
+import { getConfig } from "@/config/filesystem";
 
-const page = () => {
-  const config = CONFIG_DATA as GameConfig;
+const page = async () => {
+  const config = await getConfig();
+
+  if (config instanceof Error) {
+    throw new Error(`Error loading config: ${config.message}`);
+  }
 
   return (
     <Game gameConfig={config} />

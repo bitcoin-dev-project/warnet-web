@@ -2,7 +2,6 @@
 import React, { useMemo } from "react";
 import styles from "@/components/styles.module.css";
 import {
-  LeaderBoardCards,
   NodeGroupCards,
 } from "@/components/node-group-cards";
 import { NodeData } from "@/node";
@@ -10,7 +9,6 @@ import { useForkObserverData } from "@/services/useForkObserverData";
 import { GameConfig } from "@/types";
 import {
   compileTeamNode,
-  getLatestTipHeight,
   organiseNodesIntoTeams,
 } from "@/helpers";
 import { useAwardedPointsContext } from "@/contexts/awarded-points-context";
@@ -25,37 +23,21 @@ const Game = ({ gameConfig }: GameProps) => {
   const { teams } = gameConfig;
   const { data, isLoading, error } = useForkObserverData({
     shouldPoll: true,
-    teams,
+    gameConfig,
   });
   const { internalData } = useAwardedPointsContext();
-  // const {
-  //   internalData: { points: awardedPoints, events: eventsFromAwardedPoints },
-  // } = useAwardedPointsContext();
+
   const eventsFromAwardedPoints = internalData?.events ?? [];
-  const awardedPoints = internalData?.points ?? {};
+
   const generatedEvents = data?.events ?? []
   const feedEvents = [...generatedEvents, ...eventsFromAwardedPoints]
   feedEvents.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
-  // const feedEvents = useMemo(() => {
-  //   let feed = data?.events ?? [];
-  //   const eventsFromAwardedPoints = internalData?.events ?? [];
-  //   if (eventsFromAwardedPoints?.length) {
-  //     feed = [...feed, ...eventsFromAwardedPoints];
-  //   }
-  //   feed = feed.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  //   return feed;
-  // }, [internalData?.events, data?.events]);
-
-  // const [socket, setSocket] = useState<Socket | null>(null);
-
-  // const header_infos = data?.header_infos || [];
   const nodes = data?.nodes || [];
 
   const latestTipHeight = data?.latestTipHeight || 0;
 
   const formatNode = (teamNode: NodeData) => {
-    return compileTeamNode(teamNode, latestTipHeight);
+    return compileTeamNode(teamNode, latestTipHeight, gameConfig);
   };
 
   const { nodeGroups } = organiseNodesIntoTeams({ nodes, teams, formatNode });
@@ -67,8 +49,6 @@ const Game = ({ gameConfig }: GameProps) => {
     },
     {} as Record<string, number>
   );
-
-  const sorted = nodeGroups;
 
   // useEffect(() => {
   //   const socketInstance = new (ClientIO as any)("ws://localhost:3000", {

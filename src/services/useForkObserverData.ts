@@ -1,7 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import type { EVENT, ForkObserverData, Team } from "@/types";
-import next from "next";
-import { getConfig, StatusConfig, StatusConfigType } from "@/app/config";
+import type { EVENT, ForkObserverData, GameConfig, Team } from "@/types";
 import { isNodeLagging } from "@/helpers";
 
 const getData = async (): Promise<ForkObserverData> => {
@@ -16,13 +14,13 @@ const getData = async (): Promise<ForkObserverData> => {
 type UseForkObserverDataOptions = {
   shouldPoll?: boolean;
   pollInterval?: number;
-  teams: Team[];
+  gameConfig: GameConfig;
 };
 
 export const useForkObserverData = ({
   shouldPoll = true,
   pollInterval = 1000 * 5,
-  teams,
+  gameConfig,
 }: UseForkObserverDataOptions) =>
   useQuery<ForkObserverData, Error>({
     queryFn: () => getData(),
@@ -35,7 +33,7 @@ export const useForkObserverData = ({
         const generatedEvents = calculateEventFromDiff(
           prevData as ForkObserverData,
           nextData as ForkObserverData,
-          teams
+          gameConfig
         );
         const combinedDataWithEvents = {
           ...nextData as ForkObserverData,
@@ -53,7 +51,7 @@ export const useForkObserverData = ({
 const calculateEventFromDiff = (
   prevData: ForkObserverData,
   nextData: ForkObserverData,
-  teams: Team[]
+  gameConfig: GameConfig
 ) => {
   const events: EVENT[] = [];
 
@@ -64,7 +62,7 @@ const calculateEventFromDiff = (
   const prevTipHeight = prevData.latestTipHeight;
   const nextTipHeight = nextData.latestTipHeight;
 
-  const { config } = getConfig();
+  const { config } = gameConfig;
 
   for (const node of nextNodes) {
     const prevNode = prevNodes.find((item) => item.name === node.name);
