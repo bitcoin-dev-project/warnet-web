@@ -10,6 +10,8 @@ let inMemoryData = readFileSync(
   "utf-8"
 );
 
+export const dynamic = 'force-dynamic'
+
 export async function GET(req: NextRequest) {
   try {
     const config = await getConfig();
@@ -49,11 +51,22 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ data: {...data, latestTipHeight } as ForkObserverData, message: "Success" }, { status: 200 });
     }
 
-    const response = await fetch(fork_observer_api);
-    const data = await response.json();
+    const responseData = await fetch(fork_observer_api, {
+      cache: 'no-store',
+      headers: {
+        'Pragma': 'no-cache',
+      },
+    });
+    const data = await responseData.json() as ForkObserverData;
+    const { latestTipHeight } = getLatestTipHeight({ header_infos: data.header_infos }) ?? 0;
 
+    const response = NextResponse.json({ data: {...data, latestTipHeight } as ForkObserverData, message: "Success" }, { status: 200 });
+    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')
+    response.headers.set('Pragma', 'no-cache')
+    response.headers.set('Expires', '0')
 
-    NextResponse.json({ data, message: "Success" }, { status: 200 });
+    return response;
+
   } catch (error: any) {
     return NextResponse.json(
       { message: error?.message ?? "Error generating node data", data: null },

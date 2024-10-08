@@ -1,12 +1,12 @@
 {
-  "solomon": 5,
-  "emmanuel": 20,
-  "andreas": 4,
-  "x": 0,
-  "y": 0,
-  "v": 0,
-  "c": 0,
-  "j": 0,
-  "a": 0,
-  "p": 0
+  "red": 0,
+  "orange": 0,
+  "yellow": 0,
+  "green": 0,
+  "blue": 0,
+  "violet": 0,
+  "black": 0,
+  "white": 0,
+  "grey": 0,
+  "brown": 0
 }
