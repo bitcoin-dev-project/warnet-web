@@ -52,7 +52,7 @@ const page = () => {
   }
 
   useEffect(() => {
-    const authKey = Cookies.get('auth-token');
+    const authKey = Cookies.get('auth-key');
     if (!authKey) {
       setAdminForm({isOpen: true, invalidReason: null})
     }
