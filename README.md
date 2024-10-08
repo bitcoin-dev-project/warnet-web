@@ -2,6 +2,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+Rename the .env.example file to .env and fill in the values.
+
 First, run the development server:
 
 ```bash
@@ -40,6 +42,8 @@ Note: This file is auto-generated and should not be overwritten. Points awarded 
 The admin panel is located at `/admin`. You can use the admin panel to award points to teams.
 It will request you authentication to access the admin panel. You should enter the admin key in the form that is displayed which is stored as cookies.
 If your key is invalid and you try assigning points the form will be displayed again.
+
+ensure you have the admin key in your .env file "ADMIN_KEY = {{ADMIN_KEY_HERE}}"
 
 ## API
 
