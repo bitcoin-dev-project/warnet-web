@@ -60,11 +60,12 @@ export const compileTeamNode = (teamNode: NodeData, latestTipHeight: number, gam
 
 const scoreForVersion = (version: string, points_config: GameConfig["points_config"]) => {
   const versionNumberString = getVersionNumber(version);
-  return (points_config.core_version[versionNumberString] || points_config.core_version[version]) ?? 0 ;
+  return (points_config.core_version[version] || points_config.core_version[versionNumberString]) ?? 0 ;
 }
 
 export const getVersionNumber = (version: string) => {
-  return version.split(":")[1].split("/")[0] ?? false;
+  // get the version number from the version string
+  return version.split(":")[1].split("/")[0].split("(")[0] ?? false;
 }
 
 export const isNodeLagging = (nodeHeight: number, latestTipHeight: number, config: GameConfig["config"]) => {
