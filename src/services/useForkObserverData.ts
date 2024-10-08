@@ -3,7 +3,12 @@ import type { EVENT, ForkObserverData, GameConfig, Team } from "@/types";
 import { isNodeLagging } from "@/helpers";
 
 const getData = async (): Promise<ForkObserverData> => {
-  return fetch("/api/node-data")
+  return fetch("/api/node-data", {
+      cache: 'no-store',
+      headers: {
+        'Pragma': 'no-cache',
+      },
+    })
     .then((res) => res.json())
     .then((data) => {
       return data.data;
@@ -19,7 +24,7 @@ type UseForkObserverDataOptions = {
 
 export const useForkObserverData = ({
   shouldPoll = true,
-  pollInterval = 1000 * 5,
+  pollInterval = 1000 * 10,
   gameConfig,
 }: UseForkObserverDataOptions) =>
   useQuery<ForkObserverData, Error>({
@@ -61,6 +66,13 @@ const calculateEventFromDiff = (
   const nextNodes = nextData.nodes;
   const prevTipHeight = prevData.latestTipHeight;
   const nextTipHeight = nextData.latestTipHeight;
+
+  if (nextTipHeight > prevTipHeight) {
+    events.push({
+      message: `Tip height increased from ${prevTipHeight} to ${nextTipHeight}`,
+      date: new Date().toISOString(),
+    });
+  }
 
   const { config } = gameConfig;
 
