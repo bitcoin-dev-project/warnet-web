@@ -42,7 +42,7 @@ export const useForkObserverData = ({
         );
         const combinedDataWithEvents = {
           ...nextData as ForkObserverData,
-          events: [...generatedEvents, ...((prevData as ForkObserverData)?.events ?? [])].slice(0, 20),
+          events: [...generatedEvents, ...((prevData as ForkObserverData)?.events ?? [])].slice(0, 150),
         };
   
         return combinedDataWithEvents;
