@@ -111,7 +111,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/invalid-blocks:99.1.0(red)/",
+              "version": "/invalid-blocks:98.0.0(red)/",
               "reachable": true
           },
           {
@@ -127,7 +127,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/no-mp-trim:99.1.0(red)/",
+              "version": "/no-mp-trim:96.0.0(red)/",
               "reachable": true
           },
           {
@@ -143,7 +143,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/Satoshi:99.1.0(red)/",
+              "version": "/unknown-message:99.0.0(red)/",
               "reachable": true
           },
           {
@@ -159,7 +159,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/5k-inv:99.1.0(red)/",
+              "version": "/5k-inv:94.0.0(red)/",
               "reachable": true
           },
           {
@@ -175,7 +175,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728400080,
-              "version": "/disabled-opcodes:99.1.0(red)/",
+              "version": "/disabled-opcodes:95.0.0(red)/",
               "reachable": false
           },
           {
@@ -191,7 +191,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/50-orphans:99.1.0(red)/",
+              "version": "/50-orphans:97.0.0(red)/",
               "reachable": true
           },
           {
@@ -287,7 +287,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/invalid-blocks:99.1.0(orange)/",
+              "version": "/invalid-blocks:98.0.0(orange)/",
               "reachable": true
           },
           {
@@ -303,7 +303,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/no-mp-trim:99.1.0(orange)/",
+              "version": "/no-mp-trim:96.0.0(orange)/",
               "reachable": true
           },
           {
@@ -319,7 +319,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/Satoshi:99.1.0(orange)/",
+              "version": "/unknown-message:99.0.0(orange)/",
               "reachable": true
           },
           {
@@ -335,7 +335,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/5k-inv:99.1.0(orange)/",
+              "version": "/5k-inv:94.0.0(orange)/",
               "reachable": true
           },
           {
@@ -351,7 +351,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728400080,
-              "version": "/disabled-opcodes:99.1.0(orange)/",
+              "version": "/disabled-opcodes:95.0.0(orange)/",
               "reachable": false
           },
           {
@@ -367,7 +367,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/50-orphans:99.1.0(orange)/",
+              "version": "/50-orphans:97.0.0(orange)/",
               "reachable": true
           },
           {
@@ -463,7 +463,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/invalid-blocks:99.1.0(yellow)/",
+              "version": "/invalid-blocks:98.0.0(yellow)/",
               "reachable": true
           },
           {
@@ -479,7 +479,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/no-mp-trim:99.1.0(yellow)/",
+              "version": "/no-mp-trim:96.0.0(yellow)/",
               "reachable": true
           },
           {
@@ -495,7 +495,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/Satoshi:99.1.0(yellow)/",
+              "version": "/unknown-message:99.0.0(yellow)/",
               "reachable": true
           },
           {
@@ -511,7 +511,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/5k-inv:99.1.0(yellow)/",
+              "version": "/5k-inv:94.0.0(yellow)/",
               "reachable": true
           },
           {
@@ -527,7 +527,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728400080,
-              "version": "/disabled-opcodes:99.1.0(yellow)/",
+              "version": "/disabled-opcodes:95.0.0(yellow)/",
               "reachable": false
           },
           {
@@ -543,7 +543,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/50-orphans:99.1.0(yellow)/",
+              "version": "/50-orphans:97.0.0(yellow)/",
               "reachable": true
           },
           {
@@ -639,7 +639,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/invalid-blocks:99.1.0(green)/",
+              "version": "/invalid-blocks:98.0.0(green)/",
               "reachable": true
           },
           {
@@ -655,7 +655,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/no-mp-trim:99.1.0(green)/",
+              "version": "/no-mp-trim:96.0.0(green)/",
               "reachable": true
           },
           {
@@ -671,7 +671,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/Satoshi:99.1.0(green)/",
+              "version": "/unknown-message:99.0.0(green)/",
               "reachable": true
           },
           {
@@ -687,7 +687,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/5k-inv:99.1.0(green)/",
+              "version": "/5k-inv:94.0.0(green)/",
               "reachable": true
           },
           {
@@ -703,7 +703,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728400080,
-              "version": "/disabled-opcodes:99.1.0(green)/",
+              "version": "/disabled-opcodes:95.0.0(green)/",
               "reachable": false
           },
           {
@@ -719,7 +719,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/50-orphans:99.1.0(green)/",
+              "version": "/50-orphans:97.0.0(green)/",
               "reachable": true
           },
           {
@@ -815,7 +815,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/invalid-blocks:99.1.0(blue)/",
+              "version": "/invalid-blocks:98.0.0(blue)/",
               "reachable": true
           },
           {
@@ -831,7 +831,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/no-mp-trim:99.1.0(blue)/",
+              "version": "/no-mp-trim:96.0.0(blue)/",
               "reachable": true
           },
           {
@@ -847,7 +847,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/Satoshi:99.1.0(blue)/",
+              "version": "/unknown-message:99.0.0(blue)/",
               "reachable": true
           },
           {
@@ -863,7 +863,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/5k-inv:99.1.0(blue)/",
+              "version": "/5k-inv:94.0.0(blue)/",
               "reachable": true
           },
           {
@@ -879,7 +879,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728400080,
-              "version": "/disabled-opcodes:99.1.0(blue)/",
+              "version": "/disabled-opcodes:95.0.0(blue)/",
               "reachable": false
           },
           {
@@ -895,7 +895,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/50-orphans:99.1.0(blue)/",
+              "version": "/50-orphans:97.0.0(blue)/",
               "reachable": true
           },
           {
@@ -991,7 +991,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/invalid-blocks:99.1.0(violet)/",
+              "version": "/invalid-blocks:98.0.0(violet)/",
               "reachable": true
           },
           {
@@ -1007,7 +1007,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/no-mp-trim:99.1.0(violet)/",
+              "version": "/no-mp-trim:96.0.0(violet)/",
               "reachable": true
           },
           {
@@ -1023,7 +1023,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/Satoshi:99.1.0(violet)/",
+              "version": "/unknown-message:99.0.0(violet)/",
               "reachable": true
           },
           {
@@ -1039,7 +1039,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/5k-inv:99.1.0(violet)/",
+              "version": "/5k-inv:94.0.0(violet)/",
               "reachable": true
           },
           {
@@ -1055,7 +1055,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728400080,
-              "version": "/disabled-opcodes:99.1.0(violet)/",
+              "version": "/disabled-opcodes:95.0.0(violet)/",
               "reachable": false
           },
           {
@@ -1071,7 +1071,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/50-orphans:99.1.0(violet)/",
+              "version": "/50-orphans:97.0.0(violet)/",
               "reachable": true
           },
           {
@@ -1167,7 +1167,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/invalid-blocks:99.1.0(black)/",
+              "version": "/invalid-blocks:98.0.0(black)/",
               "reachable": true
           },
           {
@@ -1183,7 +1183,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/no-mp-trim:99.1.0(black)/",
+              "version": "/no-mp-trim:96.0.0(black)/",
               "reachable": true
           },
           {
@@ -1199,7 +1199,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/Satoshi:99.1.0(black)/",
+              "version": "/unknown-message:99.0.0(black)/",
               "reachable": true
           },
           {
@@ -1215,7 +1215,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/5k-inv:99.1.0(black)/",
+              "version": "/5k-inv:94.0.0(black)/",
               "reachable": true
           },
           {
@@ -1231,7 +1231,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728400080,
-              "version": "/disabled-opcodes:99.1.0(black)/",
+              "version": "/disabled-opcodes:95.0.0(black)/",
               "reachable": false
           },
           {
@@ -1247,7 +1247,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/50-orphans:99.1.0(black)/",
+              "version": "/50-orphans:97.0.0(black)/",
               "reachable": true
           },
           {
@@ -1343,7 +1343,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/invalid-blocks:99.1.0(white)/",
+              "version": "/invalid-blocks:98.0.0(white)/",
               "reachable": true
           },
           {
@@ -1359,7 +1359,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/no-mp-trim:99.1.0(white)/",
+              "version": "/no-mp-trim:96.0.0(white)/",
               "reachable": true
           },
           {
@@ -1375,7 +1375,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/Satoshi:99.1.0(white)/",
+              "version": "/unknown-message:99.0.0(white)/",
               "reachable": true
           },
           {
@@ -1391,7 +1391,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/5k-inv:99.1.0(white)/",
+              "version": "/5k-inv:94.0.0(white)/",
               "reachable": true
           },
           {
@@ -1407,7 +1407,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728400080,
-              "version": "/disabled-opcodes:99.1.0(white)/",
+              "version": "/disabled-opcodes:95.0.0(white)/",
               "reachable": false
           },
           {
@@ -1423,7 +1423,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/50-orphans:99.1.0(white)/",
+              "version": "/50-orphans:97.0.0(white)/",
               "reachable": true
           },
           {
@@ -1519,7 +1519,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/invalid-blocks:99.1.0(grey)/",
+              "version": "/invalid-blocks:98.0.0(grey)/",
               "reachable": true
           },
           {
@@ -1535,7 +1535,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/no-mp-trim:99.1.0(grey)/",
+              "version": "/no-mp-trim:96.0.0(grey)/",
               "reachable": true
           },
           {
@@ -1551,7 +1551,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/Satoshi:99.1.0(grey)/",
+              "version": "/unknown-message:99.0.0(grey)/",
               "reachable": true
           },
           {
@@ -1567,7 +1567,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/5k-inv:99.1.0(grey)/",
+              "version": "/5k-inv:94.0.0(grey)/",
               "reachable": true
           },
           {
@@ -1583,7 +1583,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728400080,
-              "version": "/disabled-opcodes:99.1.0(grey)/",
+              "version": "/disabled-opcodes:95.0.0(grey)/",
               "reachable": false
           },
           {
@@ -1599,7 +1599,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/50-orphans:99.1.0(grey)/",
+              "version": "/50-orphans:97.0.0(grey)/",
               "reachable": true
           },
           {
@@ -1695,7 +1695,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/invalid-blocks:99.1.0(brown)/",
+              "version": "/invalid-blocks:98.0.0(brown)/",
               "reachable": true
           },
           {
@@ -1711,7 +1711,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/no-mp-trim:99.1.0(brown)/",
+              "version": "/no-mp-trim:96.0.0(brown)/",
               "reachable": true
           },
           {
@@ -1727,7 +1727,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/Satoshi:99.1.0(brown)/",
+              "version": "/unknown-message:99.0.0(brown)/",
               "reachable": true
           },
           {
@@ -1743,7 +1743,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/5k-inv:99.1.0(brown)/",
+              "version": "/5k-inv:94.0.0(brown)/",
               "reachable": true
           },
           {
@@ -1759,7 +1759,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728400080,
-              "version": "/disabled-opcodes:99.1.0(brown)/",
+              "version": "/disabled-opcodes:95.0.0(brown)/",
               "reachable": false
           },
           {
@@ -1775,7 +1775,7 @@ const data = {
                   }
               ],
               "last_changed_timestamp": 1728403360,
-              "version": "/50-orphans:99.1.0(brown)/",
+              "version": "/50-orphans:97.0.0(brown)/",
               "reachable": true
           },
           {
