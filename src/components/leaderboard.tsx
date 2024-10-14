@@ -20,7 +20,7 @@ const Leaderboard = ({ teamPoints, awardedPoints }: LeaderboardProps) => {
   return (
     <section className="flex flex-col gap-4 rounded-lg w-full text-black dark:text-white">
       <h2 className="font-medium text-2xl text-white">Leaderboard</h2>
-      <section className="flex flex-col gap-6 p-4 rounded-lg overflow-scroll border border-neutral-800 bg-zinc-800/30 from-inherit bg-gradient-to-b backdrop-blur-2xl h-full">
+      <section className="flex flex-col gap-6 px-4 py-2 rounded-lg overflow-scroll border border-neutral-800 bg-zinc-800/30 from-inherit bg-gradient-to-b backdrop-blur-2xl h-full">
         <table className="w-full text-sm text-left text-gray-300">
           <thead className="text-xs uppercase text-gray-200">
             <tr>

@@ -2,7 +2,6 @@ import React from "react";
 import { getRelativeTimeString } from "@/helpers";
 import { EVENT } from "@/types";
 import { motion, AnimatePresence } from "framer-motion";
-import { StatusConfig } from "@/app/config";
 
 type ActivityFeedProps = {
   feed: EVENT[];
@@ -56,11 +55,11 @@ const ActivityFeed = ({ feed, currentTip }: ActivityFeedProps) => {
             >
               <div
                 key={`${item.message}-${index}`}
-                className="flex gap-2 items-center text-gray-300 text-sm justify-between w-full"
+                className="flex gap-2 text-gray-300 text-sm justify-between w-full"
               >
                 <div>
                   <p
-                    className={`${item?.type ? EventColorConfig[item?.type] : ""}`}
+                    className={`${item?.type ? EventColorConfig[item?.type] : ""} text-[18px]`}
                   >
                     {item.message}
                   </p>
@@ -68,13 +67,13 @@ const ActivityFeed = ({ feed, currentTip }: ActivityFeedProps) => {
                     <ul className="list-disc ml-4">
                       <li>
                         {item.meta.map((meta, index) => (
-                          <p key={`${index}`}>{meta}</p>
+                          <p className="text-[14px]" key={`${index}`}>{meta}</p>
                         ))}
                       </li>
                     </ul>
                   ) : null}
                 </div>
-                <p>{getRelativeTimeString(item.date)}</p>
+                <p className="text-[14px]">{getRelativeTimeString(item.date)}</p>
               </div>
             </motion.div>
           ))}
