@@ -73,7 +73,7 @@ const Game = ({ gameConfig }: GameProps) => {
 
   return (
     <div className={`flex flex-col min-h-full gap-4`}>
-      <div className="rounded-lg flex justify-stretch max-h-[507px] gap-4 ">
+      <div className="rounded-lg flex justify-stretch max-h-[534px] gap-4 ">
         <ActivityFeed feed={feedEvents ?? []} currentTip={latestTipHeight} />
         <Leaderboard teamPoints={teamPoints} awardedPoints={internalData?.points ?? {}} />
       </div>
