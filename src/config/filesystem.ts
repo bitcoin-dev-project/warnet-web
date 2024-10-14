@@ -32,3 +32,13 @@ export const getEvents = async () => {
     return new Error("Error parsing events file");
   }
 };
+
+export const writeToFile = <T>(filePath: string, data: T) => {
+  try {
+    const dirname = path.dirname(filePath);
+    fs.mkdirSync(dirname, { recursive: true });
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2), "utf-8");
+  }  catch (err: any) {
+    return new Error(err.message ?? `Error writing to file: ${filePath}`);
+  }
+};

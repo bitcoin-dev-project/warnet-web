@@ -53,6 +53,12 @@ ensure you have the admin key in your .env file "ADMIN_KEY = {{ADMIN_KEY_HERE}}"
 
 ## API
 
+### Initialize game
+`/api/initialize` initializes the game.
+- auto generates teams from the fork observer api and populates teams in the config file
+- initalizes team points config (overwrites existing points config)
+- initalizes events log (overwrites existing events log)
+
 ### Reset
 `/api/reset` resets the data in the `/data` folder. This is useful if you want to restart the game.
 
