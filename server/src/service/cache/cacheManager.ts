@@ -37,7 +37,8 @@ class CacheManager {
       this.set("new", data);
       return;
     }
-
+    // console.log(`old: ${this.cache.new?.hash} oldHeight: ${this.cache.new?.data.header_infos[15].height} \n new: ${data?.hash} newHeight: ${data?.data.header_infos[15].height}`)
+    
     this.set("old", this.cache.new);
     this.set("new", data);
   }

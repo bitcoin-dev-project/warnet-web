@@ -33,24 +33,24 @@ export const useForkObserverData = ({
     refetchOnWindowFocus: true,
     refetchInterval: shouldPoll ? pollInterval : 0, // 5 seconds default
     refetchIntervalInBackground: true,
-    structuralSharing: (prevData, nextData): ForkObserverData => {
-      try {
-        const generatedEvents = calculateEventFromDiff(
-          prevData as ForkObserverData,
-          nextData as ForkObserverData,
-          gameConfig
-        );
-        const combinedDataWithEvents = {
-          ...nextData as ForkObserverData,
-          events: [...generatedEvents, ...((prevData as ForkObserverData)?.events ?? [])].slice(0, 150),
-        };
+    // structuralSharing: (prevData, nextData): ForkObserverData => {
+    //   try {
+    //     const generatedEvents = calculateEventFromDiff(
+    //       prevData as ForkObserverData,
+    //       nextData as ForkObserverData,
+    //       gameConfig
+    //     );
+    //     const combinedDataWithEvents = {
+    //       ...nextData as ForkObserverData,
+    //       events: [...generatedEvents, ...((prevData as ForkObserverData)?.events ?? [])].slice(0, 150),
+    //     };
   
-        return combinedDataWithEvents;
-      } catch (error) {
-        console.log("error", error);
-        return nextData as ForkObserverData;
-      }
-    },
+    //     return combinedDataWithEvents;
+    //   } catch (error) {
+    //     console.log("error", error);
+    //     return nextData as ForkObserverData;
+    //   }
+    // },
   });
 
 const calculateEventFromDiff = (

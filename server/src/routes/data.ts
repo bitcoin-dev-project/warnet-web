@@ -10,17 +10,12 @@ export const nodeData = (app: Router) => {
 
   route.get("/", (req: Request, res: Response) => {
     const cacheData = internalDataCache.get("new");
-    // if (cacheData instanceof Error) {
-    //   const nodeData = getNodeData()
-    //   if (nodeData instanceof Error) {
-    //     return res.status(500).json({
-    //       message: nodeData.message,
-    //       success: false,
-    //       data: null,
-    //     });
-    //   }
-    // }
-
+    if (cacheData === null) {
+      return res.status(500).json({
+        success: false,
+        data: null
+      })
+    }
     const data = cacheDataToForkObserverResponseData(cacheData);
     
     return res.status(200).json({

@@ -2,7 +2,7 @@ import { core } from "../../domain/core";
 
 class PollingService {
   private interval: NodeJS.Timeout | null = null;
-  private pollingInterval: number = 1000 * 5;
+  private pollingInterval: number = 1000 * 10; // every 10 seconds
 
   constructor(pollingInterval: number) {
     this.pollingInterval = pollingInterval;
@@ -26,4 +26,4 @@ class PollingService {
   }
 }
 
-export const pollingService = new PollingService(1000 * 5);
+export const pollingService = new PollingService(1000 * 60);

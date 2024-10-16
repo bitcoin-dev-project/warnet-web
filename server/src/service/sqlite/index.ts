@@ -1,19 +1,42 @@
 import { EVENT } from "../../../shared/types";
 import { db } from "../../database";
 
+// export const saveEvents = async (events: EVENT[]) => {
+//   await db.run("BEGIN TRANSACTION");
+//   try {
+//     for (const event of events) {
+//       const meta = event.meta ? JSON.stringify(event.meta) : null;
+//       await db.run("INSERT INTO events (message, date, type, meta) VALUES (?, ?, ?, ?)", [event.message, event.date, event.type, meta], (res, err) => {
+
+//       });
+//     }
+//     await db.run("COMMIT TRANSACTION");
+//     return { success: true };
+//   } catch (error) {
+//     await db.run("ROLLBACK TRANSACTION");
+//     console.error("Error saving events to database:", error);
+//     return new Error("Error saving events to database");
+//   }
+// };
+
 export const saveEvents = async (events: EVENT[]) => {
+  let transactionStarted = false;
   await db.run("BEGIN TRANSACTION");
+  transactionStarted = true;
+
   try {
     for (const event of events) {
       const meta = event.meta ? JSON.stringify(event.meta) : null;
       await db.run("INSERT INTO events (message, date, type, meta) VALUES (?, ?, ?, ?)", [event.message, event.date, event.type, meta]);
     }
     await db.run("COMMIT TRANSACTION");
-    return;
+    return { success: true };
   } catch (error) {
-    await db.run("ROLLBACK TRANSACTION");
+    if (transactionStarted) {
+      await db.run("ROLLBACK TRANSACTION");
+    }
     console.error("Error saving events to database:", error);
-    return new Error("Error saving events to database");
+    throw new Error("Error saving events to database");
   }
 };
 
@@ -38,15 +61,33 @@ export const getEvents = async (): Promise<Error | EVENT[]> => {
   });
 };
 
+// export const clearAllEvents = async () => {
+//   await db.run("BEGIN TRANSACTION");
+//   try {
+//     await db.run("DELETE FROM events");
+//     await db.run("COMMIT TRANSACTION");
+//     console.log("DB cleared");
+//     return;
+//   } catch (error) {
+//     await db.run("ROLLBACK TRANSACTION");
+//     console.error("Error clearing events:", error);
+//     return new Error("Error clearing events");
+//   }
+// }
 export const clearAllEvents = async () => {
+  let transactionStarted = false;
   await db.run("BEGIN TRANSACTION");
+  transactionStarted = true;
+
   try {
     await db.run("DELETE FROM events");
     await db.run("COMMIT TRANSACTION");
-    return;
+    console.log("DB cleared");
   } catch (error) {
-    await db.run("ROLLBACK TRANSACTION");
+    if (transactionStarted) {
+      await db.run("ROLLBACK TRANSACTION");
+    }
     console.error("Error clearing events:", error);
-    return new Error("Error clearing events");
+    throw new Error("Error clearing events");
   }
-}
+};

@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useInternalData } from "@/services/useInternalData";
 import { AwardedTeamPoints, InternalData, StylePoints } from "@/types";
+import { UseQueryResult } from "@tanstack/react-query";
 
 type updateStylePointsType = ({
   type,
@@ -12,7 +13,7 @@ type updateStylePointsType = ({
 }) => void;
 
 type AwardedPointsContext = {
-  internalData: InternalData | undefined;
+  internalData: UseQueryResult<InternalData, Error>;
   points: Record<string, number>;
   stylePoints: StylePoints;
   updateStylePoints: updateStylePointsType;
@@ -42,16 +43,16 @@ export const AwardedPointsProvider = ({
 
   const [points, setPoints] = useState<AwardedTeamPoints>({});
   // const [points, setPoints] = useState(initialInternalData.points);
-  const { data: internalData } = useInternalData({ shouldPoll: true });
+  const internalData = useInternalData({ shouldPoll: false });
   // const {data: internalData} = useInternalData({initialData: initialInternalData, shouldPoll: true});
 
   const [stylePoints, setStylePoints] = useState(defaultStylePoints);
 
   if (
     Object.keys(points).length === 0 &&
-    Object.keys(internalData?.points ?? {}).length > 0
+    Object.keys(internalData.data?.points ?? {}).length > 0
   ) {
-    setPoints(internalData!.points);
+    setPoints(internalData.data!.points);
   }
 
   const updateStylePoints: updateStylePointsType = ({ type, value }) => {

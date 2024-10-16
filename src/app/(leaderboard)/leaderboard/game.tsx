@@ -1,16 +1,11 @@
 "use client";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import styles from "@/components/styles.module.css";
-import {
-  NodeGroupCards,
-} from "@/components/node-group-cards";
+import { NodeGroupCards } from "@/components/node-group-cards";
 import { NodeData } from "@/node";
 import { useForkObserverData } from "@/services/useForkObserverData";
 import { GameConfig } from "@/types";
-import {
-  compileTeamNode,
-  organiseNodesIntoTeams,
-} from "@/helpers";
+import { compileTeamNode, organiseNodesIntoTeams } from "@/helpers";
 import { useAwardedPointsContext } from "@/contexts/awarded-points-context";
 import ActivityFeed from "@/components/activity-feed";
 import Leaderboard from "@/components/leaderboard";
@@ -19,19 +14,40 @@ type GameProps = {
   gameConfig: GameConfig;
 };
 
+export type WebsocketMessage = {
+  type: WebsocketMessageType;
+  message: string;
+  data?: any;
+};
+
+export const websocketMessageType = {
+  ForkObserverData: "ForkObserverData",
+  Event: "Event",
+} as const;
+
+export type WebsocketMessageType = keyof typeof websocketMessageType;
+
 const Game = ({ gameConfig }: GameProps) => {
   const { teams } = gameConfig;
-  const { data, isLoading, error } = useForkObserverData({
-    shouldPoll: true,
+  const { data, isLoading, error, refetch } = useForkObserverData({
+    shouldPoll: false,
     gameConfig,
   });
-  const { internalData } = useAwardedPointsContext();
+  const {
+    internalData: { data: internalData, refetch: refetchInternalData },
+  } = useAwardedPointsContext();
 
   const eventsFromAwardedPoints = internalData?.events ?? [];
 
-  const generatedEvents = data?.events ?? []
-  const feedEvents = [...generatedEvents, ...eventsFromAwardedPoints]
-  feedEvents.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const generatedEvents = data?.events ?? [];
+  const feedEvents = [...generatedEvents, ...eventsFromAwardedPoints];
+  feedEvents.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+
+  const [socket, setSocket] = useState<WebSocket | null>(null);
+
+  // const header_infos = data?.header_infos || [];
   const nodes = data?.nodes || [];
 
   const latestTipHeight = data?.latestTipHeight || 0;
@@ -50,32 +66,54 @@ const Game = ({ gameConfig }: GameProps) => {
     {} as Record<string, number>
   );
 
-  // useEffect(() => {
-  //   const socketInstance = new (ClientIO as any)("ws://localhost:3000", {
-  //     path: "/api/websocket",
-  //     addTrailingSlash: false,
-  //   });
+  const wsConnected = useRef(false);
 
-  //   socketInstance.on("connect", () => {
-  //     console.log("connected");
-  //   });
+  useEffect(() => {
+    const socketInstance = new WebSocket("ws://localhost:3040/api/websocket");
 
-  //   socketInstance.on("disconnect", () => {
-  //     console.log("disconnected");
-  //   });
+    socketInstance.onopen = () => {
+      wsConnected.current = true;
+      console.log("connected");
+    };
 
-  //   setSocket(socketInstance);
+    socketInstance.onclose = () => {
+      if (wsConnected.current === true) {
+        alert("Connection closed, please reload the page");
+      }
+      console.log("Connection closed, before connection");
+      // alert("Connection closed, please reload the page");
+    };
 
-  //   return () => {
-  //     socketInstance.disconnect();
-  //   }
-  // }, []);
+    socketInstance.onmessage = (event) => {
+      const data = JSON.parse(event.data) as WebsocketMessage;
+      switch (data.type) {
+        case "Event":
+          refetchInternalData();
+          break;
+        case "ForkObserverData":
+          refetch();
+          break;
+        default:
+          break;
+      }
+    };
+
+    setSocket(socketInstance);
+
+    return () => {
+      wsConnected.current = false;
+      socketInstance.close();
+    };
+  }, []);
 
   return (
     <div className={`flex flex-col min-h-full gap-4`}>
       <div className="rounded-lg flex justify-stretch max-h-[534px] gap-4 ">
         <ActivityFeed feed={feedEvents ?? []} currentTip={latestTipHeight} />
-        <Leaderboard teamPoints={teamPoints} awardedPoints={internalData?.points ?? {}} />
+        <Leaderboard
+          teamPoints={teamPoints}
+          awardedPoints={internalData?.points ?? {}}
+        />
       </div>
 
       {/* TEAMS */}

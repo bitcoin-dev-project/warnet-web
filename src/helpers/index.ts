@@ -51,7 +51,6 @@ export const compileTeamNode = (teamNode: NodeData, latestTipHeight: number, gam
         extraStats.status = "lagging";
         extraStats.score = points_config.points_per_lagging_node;
         const score_for_version = scoreForVersion(version, points_config);
-        console.log({score_for_version})
         extraStats.score += score_for_version;
       }
     }

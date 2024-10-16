@@ -41,6 +41,13 @@ const calculateEventFromDiff = (
   const prevTipHeight = prevData.latestTipHeight;
   const nextTipHeight = nextData.latestTipHeight;
 
+  if (nextTipHeight > prevTipHeight) {
+    events.push({
+      message: `Tip height increased from ${prevTipHeight} to ${nextTipHeight}`,
+      date: new Date().toISOString(),
+    });
+  }
+
   const { config } = rootConfig;
 
   for (const node of nextNodes) {
@@ -65,9 +72,10 @@ const calculateEventFromDiff = (
         config
       );
 
-      if (isNextLagging !== isPrevLagging) {
+      if (isNextLagging && !isPrevLagging) {
         events.push({
-          message: `${node.name} is at height ${nextLatestTip.height} and is ${isNextLagging ? "now" : "not"} lagging ${isNextLagging ? `behind by ${nextTipHeight - nextLatestTip.height} blocks` : ""}`,
+          message: `${node.name} is at height ${nextLatestTip.height} and is now lagging behind by ${nextTipHeight - nextLatestTip.height} blocks`,
+          type: "lagging",
           date: new Date().toISOString(),
         });
       }
@@ -78,6 +86,7 @@ const calculateEventFromDiff = (
       if (prevReachable !== nextReachable) {
         events.push({
           message: `${node.name} is now ${nextReachable ? "reachable" : "unreachable"}`,
+          type: nextReachable ? "reachable" : "unreachable",
           date: new Date().toISOString(),
         });
       }
