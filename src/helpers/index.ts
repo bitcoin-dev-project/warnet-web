@@ -40,27 +40,34 @@ export const compileTeamNode = (teamNode: NodeData, latestTipHeight: number, gam
       score: 0,
     }
 
+    const score_for_version = scoreForVersion(version, points_config);
+
     const isLagging = isNodeLagging(tips[0].height, latestTipHeight, config);
     if (!reachable) {
       extraStats.status = "unreachable";
       extraStats.score = points_config.points_per_unreachable_node;
-      const score_for_version = scoreForVersion(version, points_config);
-      extraStats.score += score_for_version;
+
+      if (score_for_version && typeof score_for_version === "number") {
+        extraStats.score = score_for_version;
+      }
+
     } else {
       if (isLagging) {
         extraStats.status = "lagging";
         extraStats.score = points_config.points_per_lagging_node;
-        const score_for_version = scoreForVersion(version, points_config);
-        console.log({score_for_version})
-        extraStats.score += score_for_version;
+
+        if (score_for_version && typeof score_for_version === "number") {
+          extraStats.score = score_for_version;
+        }
       }
     }
+
     return {...teamNode, ...extraStats};
 };
 
-const scoreForVersion = (version: string, points_config: GameConfig["points_config"]) => {
+const scoreForVersion = (version: string, points_config: GameConfig["points_config"]): number | undefined => {
   const versionNumberString = getVersionNumber(version);
-  return (points_config.core_version[version] || points_config.core_version[versionNumberString]) ?? 0 ;
+  return (points_config.core_version[version] || points_config.core_version[versionNumberString]);
 }
 
 export const getVersionNumber = (version: string) => {

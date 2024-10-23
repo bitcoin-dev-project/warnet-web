@@ -98,22 +98,6 @@ const calculateEventFromDiff = (
         config
       );
 
-      // if (isNextLagging !== isPrevLagging) {
-      //   events.push({
-      //     message: `${node.name} is at height ${nextLatestTip.height} and is ${isNextLagging ? "now" : "not"} lagging ${isNextLagging ? `behind by ${nextTipHeight - nextLatestTip.height} blocks` : ""}`,
-      //     date: new Date().toISOString(),
-      //   });
-      // }
-
-      if (isNextLagging && !isPrevLagging) {
-        events.push({
-          message: `${node.name} is at height ${nextLatestTip.height} and is now lagging behind by ${nextTipHeight - nextLatestTip.height} blocks`,
-          type: "lagging",
-          date: new Date().toISOString(),
-          // status: "lagging",
-        });
-      }
-
       const prevReachable = prevNode.reachable;
       const nextReachable = node.reachable;
 
@@ -122,6 +106,13 @@ const calculateEventFromDiff = (
           message: `${node.name} is now ${nextReachable ? "reachable" : "unreachable"}`,
           type: nextReachable ? "reachable" : "unreachable",
           date: new Date().toISOString(),
+        });
+      } else if (isNextLagging && !isPrevLagging) {
+        events.push({
+          message: `${node.name} is at height ${nextLatestTip.height} and is now lagging behind by ${nextTipHeight - nextLatestTip.height} blocks`,
+          type: "lagging",
+          date: new Date().toISOString(),
+          // status: "lagging",
         });
       }
     }
