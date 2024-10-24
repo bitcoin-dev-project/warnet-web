@@ -107,7 +107,8 @@ const calculateEventFromDiff = (
           type: nextReachable ? "reachable" : "unreachable",
           date: new Date().toISOString(),
         });
-      } else if (isNextLagging && !isPrevLagging) {
+      }
+      if (isNextLagging && !isPrevLagging && nextReachable) {
         events.push({
           message: `${node.name} is at height ${nextLatestTip.height} and is now lagging behind by ${nextTipHeight - nextLatestTip.height} blocks`,
           type: "lagging",
