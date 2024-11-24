@@ -49,5 +49,4 @@ export const teamPoints = (app: Router) => {
       data: updatedTeamPoints,
     });
   });
-
 }

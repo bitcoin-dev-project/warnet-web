@@ -1,93 +1,94 @@
 import { EVENT } from "../../../shared/types";
 import { db } from "../../database";
 
-// export const saveEvents = async (events: EVENT[]) => {
-//   await db.run("BEGIN TRANSACTION");
-//   try {
-//     for (const event of events) {
-//       const meta = event.meta ? JSON.stringify(event.meta) : null;
-//       await db.run("INSERT INTO events (message, date, type, meta) VALUES (?, ?, ?, ?)", [event.message, event.date, event.type, meta], (res, err) => {
+export const saveEvents = async (events: EVENT[]): Promise<{ success: boolean }> => {
+  return new Promise((resolve, reject) => {
+    db.serialize(() => {
+      db.run("BEGIN TRANSACTION", (err) => {
+        if (err) {
+          console.error("Error starting transaction:", err);
+          return reject(err);
+        }
 
-//       });
-//     }
-//     await db.run("COMMIT TRANSACTION");
-//     return { success: true };
-//   } catch (error) {
-//     await db.run("ROLLBACK TRANSACTION");
-//     console.error("Error saving events to database:", error);
-//     return new Error("Error saving events to database");
-//   }
-// };
-
-export const saveEvents = async (events: EVENT[]) => {
-  let transactionStarted = false;
-  await db.run("BEGIN TRANSACTION");
-  transactionStarted = true;
-
-  try {
-    for (const event of events) {
-      const meta = event.meta ? JSON.stringify(event.meta) : null;
-      await db.run("INSERT INTO events (message, date, type, meta) VALUES (?, ?, ?, ?)", [event.message, event.date, event.type, meta]);
-    }
-    await db.run("COMMIT TRANSACTION");
-    return { success: true };
-  } catch (error) {
-    if (transactionStarted) {
-      await db.run("ROLLBACK TRANSACTION");
-    }
-    console.error("Error saving events to database:", error);
-    throw new Error("Error saving events to database");
-  }
-};
-
-export const getEvents = async (): Promise<Error | EVENT[]> => {
-  return new Promise((resolve) => {
-    db.all("SELECT * FROM events ORDER BY id DESC", [], (err, rows) => {
-      if (err) {
-        console.error("Error fetching events from database:", err);
-        resolve(new Error("Error fetching events from database"));
-      } else {
-        (rows as EVENT[]).map((item) => {
-          try {
-            item.meta = item.meta ? JSON.parse((item.meta as unknown as string)) : null;
-            return item;
-          } catch (error) {
-            return item;
+        const stmt = db.prepare("INSERT INTO events (message, date, type, meta) VALUES (?, ?, ?, ?)");
+        
+        try {
+          for (const event of events) {
+            const meta = event.meta ? JSON.stringify(event.meta) : null;
+            stmt.run([event.message, event.date, event.type, meta]);
           }
-        });
-        resolve(rows as EVENT[]);
-      }
+          
+          stmt.finalize();
+          
+          db.run("COMMIT", (commitErr) => {
+            if (commitErr) {
+              console.error("Error committing transaction:", commitErr);
+              db.run("ROLLBACK");
+              return reject(commitErr);
+            }
+            resolve({ success: true });
+          });
+        } catch (error) {
+          console.error("Error saving events to database:", error);
+          db.run("ROLLBACK");
+          reject(new Error("Error saving events to database"));
+        }
+      });
     });
   });
 };
 
-// export const clearAllEvents = async () => {
-//   await db.run("BEGIN TRANSACTION");
-//   try {
-//     await db.run("DELETE FROM events");
-//     await db.run("COMMIT TRANSACTION");
-//     console.log("DB cleared");
-//     return;
-//   } catch (error) {
-//     await db.run("ROLLBACK TRANSACTION");
-//     console.error("Error clearing events:", error);
-//     return new Error("Error clearing events");
-//   }
-// }
-export const clearAllEvents = async () => {
-  let transactionStarted = false;
-  await db.run("BEGIN TRANSACTION");
-  transactionStarted = true;
+export const getEvents = async (): Promise<EVENT[]> => {
+  return new Promise((resolve, reject) => {
+    db.all("SELECT * FROM events ORDER BY id DESC", [], (err, rows) => {
+      if (err) {
+        console.error("Error fetching events from database:", err);
+        return reject(new Error("Error fetching events from database"));
+      }
+      
+      const events = (rows as EVENT[]).map((item) => {
+        try {
+          return {
+            ...item,
+            meta: item.meta ? JSON.parse(item.meta as unknown as string) : null
+          };
+        } catch (error) {
+          return item;
+        }
+      });
+      
+      resolve(events);
+    });
+  });
+};
 
-  try {
-    await db.run("DELETE FROM events");
-    await db.run("COMMIT TRANSACTION");
-    console.log("DB cleared");
-  } catch (error) {
-    if (transactionStarted) {
-      await db.run("ROLLBACK TRANSACTION");
-    }
-    console.error("Error clearing events:", error);
-    throw new Error("Error clearing events");
-  }
+export const clearAllEvents = async (): Promise<void> => {
+  return new Promise((resolve, reject) => {
+    db.serialize(() => {
+      db.run("BEGIN TRANSACTION", (err) => {
+        if (err) {
+          console.error("Error starting transaction:", err);
+          return reject(err);
+        }
+
+        db.run("DELETE FROM events", (deleteErr) => {
+          if (deleteErr) {
+            console.error("Error clearing events:", deleteErr);
+            db.run("ROLLBACK");
+            return reject(new Error("Error clearing events"));
+          }
+
+          db.run("COMMIT", (commitErr) => {
+            if (commitErr) {
+              console.error("Error committing transaction:", commitErr);
+              db.run("ROLLBACK");
+              return reject(commitErr);
+            }
+            console.log("DB cleared");
+            resolve();
+          });
+        });
+      });
+    });
+  });
 };

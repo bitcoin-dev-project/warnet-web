@@ -72,7 +72,11 @@ const calculateEventFromDiff = (
         config
       );
 
-      if (isNextLagging && !isPrevLagging) {
+      const prevReachable = prevNode.reachable;
+      const nextReachable = node.reachable;
+
+      // can only be lagging if node is reachable
+      if (isNextLagging && !isPrevLagging && nextReachable) {
         events.push({
           message: `${node.name} is at height ${nextLatestTip.height} and is now lagging behind by ${nextTipHeight - nextLatestTip.height} blocks`,
           type: "lagging",
@@ -80,9 +84,7 @@ const calculateEventFromDiff = (
         });
       }
 
-      const prevReachable = prevNode.reachable;
-      const nextReachable = node.reachable;
-
+      // trigger event when node is reachable or unreachable
       if (prevReachable !== nextReachable) {
         events.push({
           message: `${node.name} is now ${nextReachable ? "reachable" : "unreachable"}`,
