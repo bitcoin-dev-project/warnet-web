@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "@/components/styles.module.css";
 import { NodeGroupCards } from "@/components/node-group-cards";
 import { NodeData } from "@/node";
@@ -29,7 +29,7 @@ export type WebsocketMessageType = keyof typeof websocketMessageType;
 
 const Game = ({ gameConfig }: GameProps) => {
   const { teams } = gameConfig;
-  const { data, isLoading, error, refetch } = useForkObserverData({
+  const { data, isLoading, error, refetch: refetchForkObserverData } = useForkObserverData({
     shouldPoll: false,
     gameConfig,
   });
@@ -39,15 +39,12 @@ const Game = ({ gameConfig }: GameProps) => {
 
   const eventsFromAwardedPoints = internalData?.events ?? [];
 
-  const generatedEvents = data?.events ?? [];
-  const feedEvents = [...generatedEvents, ...eventsFromAwardedPoints];
-  feedEvents.sort(
+  const feedEvents = eventsFromAwardedPoints.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
-  const [socket, setSocket] = useState<WebSocket | null>(null);
+  const [_socket, setSocket] = useState<WebSocket | null>(null);
 
-  // const header_infos = data?.header_infos || [];
   const nodes = data?.nodes || [];
 
   const latestTipHeight = data?.latestTipHeight || 0;
@@ -91,7 +88,7 @@ const Game = ({ gameConfig }: GameProps) => {
           refetchInternalData();
           break;
         case "ForkObserverData":
-          refetch();
+          refetchForkObserverData();
           break;
         default:
           break;

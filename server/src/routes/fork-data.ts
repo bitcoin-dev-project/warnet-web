@@ -1,11 +1,10 @@
 import { Request, Response, Router } from "express";
-// import { getNodeData } from "../service/file";
 import { internalDataCache } from "../service/cache/cacheManager";
 import { cacheDataToForkObserverResponseData } from "../service/transformers";
 
 const route = Router();
 
-export const nodeData = (app: Router) => {
+export const forkData = (app: Router) => {
   app.use("/fork-data", route);
 
   route.get("/", (req: Request, res: Response) => {

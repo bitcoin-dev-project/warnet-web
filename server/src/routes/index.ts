@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express"
 import { teamPoints } from "./team-points";
-import { nodeData } from "./data";
+import { forkData } from "./fork-data";
 import { pollingRoute } from "./polling";
 import { dbRoute } from "./db";
 import { eventsRoute } from "./events";
@@ -13,7 +13,7 @@ export const routes = () => {
 
   teamPoints(app);
   eventsRoute(app)
-  nodeData(app);
+  forkData(app);
   pollingRoute(app);
   dbRoute(app);
 
