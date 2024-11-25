@@ -4,6 +4,8 @@ import { forkData } from "./fork-data";
 import { pollingRoute } from "./polling";
 import { dbRoute } from "./db";
 import { eventsRoute } from "./events";
+import { resetRoute } from "./reset";
+import { configRoute } from "./config";
 
 export const routes = () => {
   const app = Router()
@@ -16,6 +18,8 @@ export const routes = () => {
   forkData(app);
   pollingRoute(app);
   dbRoute(app);
+  configRoute(app);
+  resetRoute(app);
 
   return app;
 }

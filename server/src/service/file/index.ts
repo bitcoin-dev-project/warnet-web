@@ -2,9 +2,9 @@ import path from "path";
 import { promises as fs, readFileSync } from "fs";
 import { AwardedTeamPoints, ForkObserverData, GameConfig } from "../../../shared/types";
 
-const teamPointsPath = path.resolve(process.cwd(), "..", "data", "team-points.json");
+export const teamPointsPath = path.resolve(process.cwd(), "..", "data", "team-points.json");
 const nodeDataPath = path.resolve(process.cwd(), "..", "public", "header-and-teams.json");
-const gameConfigPath = path.resolve(process.cwd(), "..", "config.json");
+export const gameConfigPath = path.resolve(process.cwd(), "..", "config.json");
 
 export const getTeamPoints = () => {
   const file = readFileSync(teamPointsPath, "utf-8");

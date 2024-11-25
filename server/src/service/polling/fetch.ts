@@ -9,22 +9,22 @@ if (!(gameConfig instanceof Error)) {
   fork_observer_api = gameConfig.fork_observer_api;
 }
 
-export const fetchData = async (): Promise<ForkObserverData | Error> => {
+export const fetchData = async ({allowDummyData = true}: {allowDummyData?: boolean}): Promise<ForkObserverData | Error> => {
   try {
-    // if (!fork_observer_api.trim()) {
-    //   return getNodeData();
-    // }
-
     if (!fork_observer_api.trim()) {
+      if (!allowDummyData) {
+        return new Error("No fork observer api provided");
+      }
       if (inMemoryData instanceof Error) {
         return inMemoryData;
       }
-      const data = JSON.parse(JSON.stringify(inMemoryData));
-      if (data.header_infos[15].height > 81) {
-            data.header_infos[15].height = 80;
-          } else {
-            data.header_infos[15].height += 1;
-          }
+
+      // parse and stringify to deep copy
+      const data = JSON.parse(JSON.stringify(inMemoryData)) as ForkObserverData;
+
+      // invert a node's reachable status to simulate activity
+      data.nodes[3].reachable = !data.nodes[3].reachable
+
       inMemoryData = {...data};
 
       return data;
