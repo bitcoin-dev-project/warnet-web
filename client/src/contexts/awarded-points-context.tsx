@@ -1,8 +1,6 @@
 "use client";
-import React, { useState } from "react";
-import { useInternalData } from "@/services/useInternalData";
-import { AwardedTeamPoints, InternalData, StylePoints } from "@/types";
-import { UseQueryResult } from "@tanstack/react-query";
+import { useState } from "react";
+import { StylePoints } from "@/types";
 
 type updateStylePointsType = ({
   type,
@@ -12,48 +10,14 @@ type updateStylePointsType = ({
   value: string | number;
 }) => void;
 
-type AwardedPointsContext = {
-  internalData: UseQueryResult<InternalData, Error>;
-  points: Record<string, number>;
-  stylePoints: StylePoints;
-  updateStylePoints: updateStylePointsType;
-  savePoints: () => Promise<{
-    success: boolean;
-    message: any;
-    unauthorized?: boolean;
-  }>;
-};
-
-export const awardedPointsContext = React.createContext<AwardedPointsContext>(
-  null!
-);
-
-export const AwardedPointsProvider = ({
-  children,
-  // initialInternalData,
-}: {
-  children: React.ReactNode;
-  // initialInternalData: InternalData;
-}) => {
+export const useAwardedPoints = () => {
   const defaultStylePoints: StylePoints = {
     name: "",
     score: 0,
     reason: "",
   };
 
-  const [points, setPoints] = useState<AwardedTeamPoints>({});
-  // const [points, setPoints] = useState(initialInternalData.points);
-  const internalData = useInternalData({ shouldPoll: false });
-  // const {data: internalData} = useInternalData({initialData: initialInternalData, shouldPoll: true});
-
   const [stylePoints, setStylePoints] = useState(defaultStylePoints);
-
-  if (
-    Object.keys(points).length === 0 &&
-    Object.keys(internalData.data?.points ?? {}).length > 0
-  ) {
-    setPoints(internalData.data!.points);
-  }
 
   const updateStylePoints: updateStylePointsType = ({ type, value }) => {
     setStylePoints({ ...stylePoints, [type]: value });
@@ -72,11 +36,9 @@ export const AwardedPointsProvider = ({
       });
 
       if (response.ok) {
-        updateClientPoints({ name, score });
         setStylePoints(defaultStylePoints);
         return { success: true, message: "Config saved successfully!" };
       } else if (response.status === 401) {
-        // setAdminForm({isOpen: true, invalidReason: "Invalid auth key"})
         return { success: false, message: "Invalid auth key", unauthorized: true};
       } else {
         const result = await response.json();
@@ -92,39 +54,5 @@ export const AwardedPointsProvider = ({
     }
   };
 
-  const updateClientPoints = ({
-    name,
-    score,
-  }: {
-    name: string;
-    score: number;
-  }) => {
-    const newPoints = JSON.parse(JSON.stringify(points));
-    newPoints[name] = (newPoints[name] ?? 0) + score;
-    setPoints({ ...newPoints });
-  };
-
-  return (
-    <awardedPointsContext.Provider
-      value={{
-        points,
-        internalData,
-        stylePoints,
-        updateStylePoints,
-        savePoints: handleSaveConfig,
-      }}
-    >
-      {children}
-    </awardedPointsContext.Provider>
-  );
-};
-
-export const useAwardedPointsContext = () => {
-  const context = React.useContext(awardedPointsContext);
-  if (context === undefined) {
-    throw new Error(
-      "useNetworkContext must be used within a AwardedPointsProvider"
-    );
-  }
-  return context;
+  return { stylePoints, updateStylePoints, handleSaveConfig };
 };

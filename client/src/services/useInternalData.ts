@@ -10,7 +10,7 @@ const getData = async (): Promise<InternalData> => {
     .catch((err) => err);
 };
 
-export const useInternalData = ({initialData, shouldPoll = true, pollInterval = 1000 * 3}: {initialData?: InternalData, shouldPoll?: boolean, pollInterval?: number}) =>
+export const useInternalData = () =>
   useQuery<InternalData, Error>({
     queryFn: () => getData(),
     queryKey: ["events", "points"],

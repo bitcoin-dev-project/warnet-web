@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useAwardedPointsContext } from "@/contexts/awarded-points-context";
 import { motion } from "framer-motion";
 import Cookies from "js-cookie";
 import { useQueryClient } from "@tanstack/react-query";
+import { useAwardedPoints } from "@/contexts/awarded-points-context";
+import { useInternalData } from "@/services/useInternalData";
 
 type AdminForm = {
   isOpen: boolean;
@@ -12,15 +13,11 @@ type AdminForm = {
 }
 
 const page = () => {
-  const {
-    points,
-    stylePoints,
-    updateStylePoints,
-    savePoints,
-    internalData,
-  } = useAwardedPointsContext();
+  const { stylePoints, updateStylePoints, handleSaveConfig: savePoints } = useAwardedPoints();
 
   const queryClient = useQueryClient();
+
+  const { data: internalData } = useInternalData();
 
   const [adminForm, setAdminForm] = useState<AdminForm>({
     isOpen: false,
@@ -105,7 +102,7 @@ const page = () => {
           <div className="flex flex-col gap-6 h-full w-full max-w-[500px]">
             <div className="flex flex-col gap-6 w-full items-center">
               <section className="w-full">
-                {Object.entries(internalData.data?.points ?? {}).map(([key, value], index) => (
+                {Object.entries(internalData?.points ?? {}).map(([key, value], index) => (
                   <div
                     key={`${key}-${index}`}
                     className="flex justify-between items-center gap-2"
@@ -129,7 +126,7 @@ const page = () => {
                   required
                 >
                   <option value="">Select a team</option>
-                  {Object.keys(points).map((key, index) => (
+                  {Object.keys(internalData?.points ?? {}).map((key, index) => (
                     <option key={`${key}-${index}`} value={key}>
                       {key}
                     </option>

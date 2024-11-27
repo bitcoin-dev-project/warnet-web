@@ -6,9 +6,9 @@ import { NodeData } from "@/node";
 import { useForkObserverData } from "@/services/useForkObserverData";
 import { GameConfig } from "@/types";
 import { compileTeamNode, organiseNodesIntoTeams } from "@/helpers";
-import { useAwardedPointsContext } from "@/contexts/awarded-points-context";
 import ActivityFeed from "@/components/activity-feed";
 import Leaderboard from "@/components/leaderboard";
+import { useInternalData } from "@/services/useInternalData";
 
 type GameProps = {
   gameConfig: GameConfig;
@@ -30,9 +30,7 @@ export type WebsocketMessageType = keyof typeof websocketMessageType;
 const Game = ({ gameConfig }: GameProps) => {
   const { teams } = gameConfig;
   const { data, isLoading, error, refetch: refetchForkObserverData } = useForkObserverData({});
-  const {
-    internalData: { data: internalData, refetch: refetchInternalData },
-  } = useAwardedPointsContext();
+  const { data: internalData, refetch: refetchInternalData } = useInternalData();
 
   const events = internalData?.events ?? [];
 

@@ -2,7 +2,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter, IBM_Plex_Sans } from "next/font/google";
 import QueryProvider from "@/app/providers";
-import { AwardedPointsProvider } from "@/contexts/awarded-points-context";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const ibm = IBM_Plex_Sans({
@@ -27,7 +26,7 @@ export default async function RootLayout({
     <html lang="en">
       <body className={`${inter.variable} ${ibm.variable} font-ibm`}>
         <QueryProvider>
-          <AwardedPointsProvider>{children}</AwardedPointsProvider>
+          {children}
         </QueryProvider>
       </body>
     </html>
