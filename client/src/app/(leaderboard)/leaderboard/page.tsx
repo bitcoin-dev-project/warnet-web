@@ -22,8 +22,11 @@ async function processServerUrl(prevState: any, formData: FormData) {
     // Validate the URL
     const { url: validatedUrl } = serverUrlSchema.parse({ url });
 
-    // try to get config from the server, throws error if it fails
-    await fetchConfig(validatedUrl + "/config");
+    // try to get config from the server, returns error if it fails
+    const config = await fetchConfig(validatedUrl + "/config");
+    if (config instanceof Error) {
+      return { success: false, message: config.message, data: null };
+    }
 
     const obfuscatedUrl = new URLEncryptor(
       process.env.ENCRYPTION_SECRET ?? ""

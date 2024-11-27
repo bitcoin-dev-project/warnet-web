@@ -25,8 +25,8 @@ export default function ServerUrlForm({ processServerUrl }: ServerUrlInputProps)
     const formData = new FormData(e.currentTarget)
     const response = await processServerUrl(null, formData)
 
-    console.log({response})
     setIsLoading(false)
+    setState(response)
 
     if (response?.success && response.data) {
       router.push(`/leaderboard/${response.data}`)
