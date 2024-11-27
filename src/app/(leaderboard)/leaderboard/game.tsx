@@ -29,17 +29,14 @@ export type WebsocketMessageType = keyof typeof websocketMessageType;
 
 const Game = ({ gameConfig }: GameProps) => {
   const { teams } = gameConfig;
-  const { data, isLoading, error, refetch: refetchForkObserverData } = useForkObserverData({
-    shouldPoll: false,
-    gameConfig,
-  });
+  const { data, isLoading, error, refetch: refetchForkObserverData } = useForkObserverData({});
   const {
     internalData: { data: internalData, refetch: refetchInternalData },
   } = useAwardedPointsContext();
 
-  const eventsFromAwardedPoints = internalData?.events ?? [];
+  const events = internalData?.events ?? [];
 
-  const feedEvents = eventsFromAwardedPoints.sort(
+  const feedEvents = events.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
@@ -66,7 +63,7 @@ const Game = ({ gameConfig }: GameProps) => {
   const wsConnected = useRef(false);
 
   useEffect(() => {
-    const socketInstance = new WebSocket("ws://localhost:3040/api/websocket");
+    const socketInstance = new WebSocket(gameConfig.websocket_url);
 
     socketInstance.onopen = () => {
       wsConnected.current = true;

@@ -5,23 +5,20 @@ export function middleware(request: NextRequest) {
   const cookieAuth = request.cookies.get('auth-key')
   const headerAuth = request.headers.get('x-auth-key')
 
-  const isHeaderAuthenticated = headerAuth === process.env.ADMIN_KEY
- 
-  const isCookieAuthenticated = cookieAuth?.value === process.env.ADMIN_KEY
-
-  if (!isCookieAuthenticated && !isHeaderAuthenticated) {
+  if (!cookieAuth && !headerAuth) {
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
+
+  let authKey = ""
+  if (cookieAuth) {
+    authKey = cookieAuth.value
+  } else if (headerAuth) {  
+    authKey = headerAuth
+  }
   
+  // consolidate headerAuth and cookieAuth
   const response = NextResponse.next()
-  // response.cookies.set({
-  //   name:'auth-key', 
-  //   value:"from-server-limited",
-  //   httpOnly: true,
-  //   secure: false,
-  //   sameSite: 'strict',
-  //   path: '/',
-  // })
+  response.headers.set('x-auth-key', authKey)
   return response;
 }
  

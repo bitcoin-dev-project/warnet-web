@@ -15,21 +15,10 @@ const getData = async (): Promise<ForkObserverData> => {
     .catch((err) => err);
 };
 
-type UseForkObserverDataOptions = {
-  shouldPoll?: boolean;
-  pollInterval?: number;
-  gameConfig: GameConfig;
-};
-
-export const useForkObserverData = ({
-  shouldPoll = true,
-  pollInterval = 1000 * 10,
-  gameConfig,
-}: UseForkObserverDataOptions) =>
+export const useForkObserverData = ({server_url}: {server_url?: string}) =>
   useQuery<ForkObserverData, Error>({
     queryFn: () => getData(),
     queryKey: ["fork-observer-data"],
     refetchOnWindowFocus: true,
-    refetchInterval: shouldPoll ? pollInterval : 0, // 5 seconds default
     refetchIntervalInBackground: true,
   });

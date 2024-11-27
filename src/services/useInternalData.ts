@@ -15,6 +15,6 @@ export const useInternalData = ({initialData, shouldPoll = true, pollInterval = 
     queryFn: () => getData(),
     queryKey: ["events", "points"],
     refetchOnWindowFocus: true,
-    refetchInterval: shouldPoll ? pollInterval : 0, // 3 seconds default
+    // refetchInterval: shouldPoll ? pollInterval : 0, // 3 seconds default
     // initialData: initialData,
   });

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useAwardedPointsContext } from "@/contexts/awarded-points-context";
 import { motion } from "framer-motion";
 import Cookies from "js-cookie";
+import { useQueryClient } from "@tanstack/react-query";
 
 type AdminForm = {
   isOpen: boolean;
@@ -15,8 +16,11 @@ const page = () => {
     points,
     stylePoints,
     updateStylePoints,
-    savePoints
+    savePoints,
+    internalData,
   } = useAwardedPointsContext();
+
+  const queryClient = useQueryClient();
 
   const [adminForm, setAdminForm] = useState<AdminForm>({
     isOpen: false,
@@ -46,8 +50,10 @@ const page = () => {
       return;
     }
     if (!result.success) {
-      alert(result.message);
+      console.error(result.message);
     }
+    // invalidate queries
+    await queryClient.invalidateQueries({ queryKey: ["events", "points"] });
     return;
   }
 
@@ -99,7 +105,7 @@ const page = () => {
           <div className="flex flex-col gap-6 h-full w-full max-w-[500px]">
             <div className="flex flex-col gap-6 w-full items-center">
               <section className="w-full">
-                {Object.entries(points).map(([key, value], index) => (
+                {Object.entries(internalData.data?.points ?? {}).map(([key, value], index) => (
                   <div
                     key={`${key}-${index}`}
                     className="flex justify-between items-center gap-2"
