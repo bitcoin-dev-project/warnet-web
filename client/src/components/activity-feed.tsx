@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { getRelativeTimeString } from "@/helpers";
 import { EVENT } from "@/types";
 import { motion, AnimatePresence } from "framer-motion";
@@ -25,6 +25,16 @@ const OnlineIndicator = () => {
 };
 
 const ActivityFeed = ({ feed, currentTip }: ActivityFeedProps) => {
+  
+  // rerender every second to keep the date updated
+  const [date, setDate] = useState(new Date());
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDate(new Date());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="relative flex flex-col gap-4 w-full text-white">
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent via-[rgba(0,0,0,0.1)] via-50% to-[rgba(0,0,0,0.4)] z-10 pointer-events-none"></div>
