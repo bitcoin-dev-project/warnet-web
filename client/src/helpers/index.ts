@@ -40,18 +40,25 @@ export const compileTeamNode = (teamNode: NodeData, latestTipHeight: number, gam
       score: 0,
     }
 
+    const score_for_version = scoreForVersion(version, points_config);
+
     const isLagging = isNodeLagging(tips[0].height, latestTipHeight, config);
     if (!reachable) {
       extraStats.status = "unreachable";
       extraStats.score = points_config.points_per_unreachable_node;
-      const score_for_version = scoreForVersion(version, points_config);
-      extraStats.score += score_for_version;
+
+      if (score_for_version && typeof score_for_version === "number") {
+        extraStats.score = score_for_version;
+      }
+
     } else {
       if (isLagging) {
         extraStats.status = "lagging";
         extraStats.score = points_config.points_per_lagging_node;
-        const score_for_version = scoreForVersion(version, points_config);
-        extraStats.score += score_for_version;
+
+        if (score_for_version && typeof score_for_version === "number") {
+          extraStats.score = score_for_version;
+        }
       }
     }
     return {...teamNode, ...extraStats};
