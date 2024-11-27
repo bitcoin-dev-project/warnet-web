@@ -47,6 +47,7 @@ export const teamPoints = (app: Router) => {
     return res.status(200).json({
       success: true,
       data: updatedTeamPoints,
+      message: "Team points updated successfully",
     });
   });
 }

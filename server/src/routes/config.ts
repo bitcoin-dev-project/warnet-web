@@ -8,9 +8,26 @@ import { compileTeams, initializeTeamPoints, validateConfig } from "../config";
 const route = Router();
 
 export const configRoute = (app: Router) => {
-  app.use("/config", adminAuth, route);
+  app.use("/config", route);
 
-  route.post("/raw_update", async (req: Request, res: Response) => {
+  route.get("/", async (req: Request, res: Response) => {
+    const config = getGameConfig();
+    if (config instanceof Error) {
+      return res.status(500).json({
+        message: config.message,
+        success: false,
+        data: null,
+      });
+    }
+
+    const {fork_observer_api, ...rest} = config
+    return res.json({
+      success: true,
+      data: rest,
+    });
+  });
+
+  route.post("/raw_update", adminAuth,async (req: Request, res: Response) => {
     const config = req.body
 
     const overWriteTeamPoints = req.params.overwriteTeamPoints;
@@ -42,14 +59,13 @@ export const configRoute = (app: Router) => {
     
     return res.status(200).json({
       success: true,
-      data: "events",
+      data: "Updated config",
     });
   });
 
-  route.post("/compile-teams", async (req: Request, res: Response) => {
-
+  route.post("/compile-teams", adminAuth, async (req: Request, res: Response) => {
     try {
-      const overWriteTeamPoints = req.params.overwriteTeamPoints;
+      const overWriteTeamPoints = req.query.overwriteTeamPoints;
       const overWriteTeamPointsBool = overWriteTeamPoints === "true";
 
       const config = getGameConfig();

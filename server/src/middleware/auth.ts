@@ -12,15 +12,14 @@ export async function adminAuth(
   res: Response,
   next: NextFunction
 ) {
-  if (req.headers["x-admin-key"] === ADMIN_KEY) {
+  if (req.headers["x-auth-key"] === ADMIN_KEY) {
     return next();
   }
 
-  // Log for unauthorized access attempts, but avoid logging the key itself
   console.warn("Unauthorized access attempt with incorrect admin key.");
 
   return res.status(401).json({
-    status: "error",
+    success: false,
     message: "Unauthorized",
   });
 }
