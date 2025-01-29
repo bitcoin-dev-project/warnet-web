@@ -5,6 +5,11 @@ import { isValidUrl } from "@/helpers/validation";
 import LoadingScreen from "@/components/loading-screen";
 import { fetchConfig } from "../utils";
 
+// force dynamic page (page is never cached)
+export const dynamic = "force-dynamic";
+// fetched data is never cached
+export const fetchCache = "force-no-store";
+
 const ErrorScreen = ({ error }: { error: { error: boolean; message: string } }) => (
   <div className="text-white flex flex-col items-center justify-center h-screen">
     <div className="text-center">
@@ -27,11 +32,17 @@ const GamePage = async ({ params }: { params: { slug: string } }) => {
                     decryptedSlug.message : 
                     "Invalid URL");
   }
-
+  
   const gameConfig = await fetchConfig(decryptedSlug + "/config");
+
+  console.dir({decryptedSlug, gameConfig}, {depth: 4})
 
   if (gameConfig instanceof Error) {
     return <ErrorScreen error={{ error: true, message: gameConfig.message }} />;
+  }
+
+  if (!gameConfig?.websocket_url) {
+    return <ErrorScreen error={{ error: true, message: "No websocket url found for server" }} />;
   }
 
   return <Game gameConfig={gameConfig} />;

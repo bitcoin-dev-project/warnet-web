@@ -1,9 +1,14 @@
 import { GameConfig } from "@/types";
 
 export const fetchConfig = async (url: string): Promise<GameConfig | Error> => {
-  await new Promise(resolve => setTimeout(resolve, 1500));
+  await new Promise((resolve) => setTimeout(resolve, 1500));
   try {
-    const configResponse = await fetch(url);
+    const configResponse = await fetch(url, {
+      cache: "no-store",
+      headers: {
+        Pragma: "no-cache",
+      },
+    });
 
     if (!configResponse.ok) {
       switch (configResponse.status) {
@@ -12,7 +17,9 @@ export const fetchConfig = async (url: string): Promise<GameConfig | Error> => {
         case 500:
           return new Error("Error: Server error (500).");
         default:
-          return new Error(`Error: Unexpected response status ${configResponse.status}.`);
+          return new Error(
+            `Error: Unexpected response status ${configResponse.status}.`
+          );
       }
     }
 
