@@ -3,13 +3,13 @@ import { getGameConfig, getNodeData } from "../file";
 
 let inMemoryData = getNodeData();
 
-let fork_observer_api = ""
-const gameConfig = getGameConfig();
-if (!(gameConfig instanceof Error)) {
-  fork_observer_api = gameConfig.fork_observer_api;
-}
-
 export const fetchData = async ({allowDummyData = true}: {allowDummyData?: boolean}): Promise<ForkObserverData | Error> => {
+  let fork_observer_api = ""
+  const gameConfig = getGameConfig();
+  if (!(gameConfig instanceof Error)) {
+    fork_observer_api = gameConfig.fork_observer_api;
+  }
+  
   try {
     if (!fork_observer_api.trim()) {
       if (!allowDummyData) {
