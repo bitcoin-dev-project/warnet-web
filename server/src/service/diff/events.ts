@@ -58,20 +58,19 @@ const calculateEventFromDiff = (
         date: new Date().toISOString(),
       });
     } else {
-      const prevLatestTip = prevNode.tips[0];
-      const nextLatestTip = node.tips[0];
+      const prevNodeLatestTip = prevNode.tips?.[0];
+      const nextNodeLatestTip = node.tips?.[0];
 
-      if (!prevLatestTip?.height || !nextLatestTip?.height) {
-        break;
-      }
+      const prevNodeLatestTipHeight = prevNodeLatestTip?.height ?? 0;
+      const nextNodeLatestTipHeight = nextNodeLatestTip?.height ?? 0;
 
       const isPrevLagging = isNodeLagging(
-        prevLatestTip?.height,
+        prevNodeLatestTipHeight,
         prevTipHeight,
         config
       );
       const isNextLagging = isNodeLagging(
-        nextLatestTip.height,
+        nextNodeLatestTipHeight,
         nextTipHeight,
         config
       );
@@ -82,7 +81,7 @@ const calculateEventFromDiff = (
       // can only be lagging if node is reachable
       if (isNextLagging && !isPrevLagging && nextReachable) {
         events.push({
-          message: `${node.name} is at height ${nextLatestTip.height} and is now lagging behind by ${nextTipHeight - nextLatestTip.height} blocks`,
+          message: `${node.name} is at height ${nextNodeLatestTipHeight} and is now lagging behind by ${nextTipHeight - nextNodeLatestTipHeight} blocks`,
           type: "lagging",
           date: new Date().toISOString(),
         });
