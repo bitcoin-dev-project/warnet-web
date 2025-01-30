@@ -123,6 +123,7 @@ export const configRoute = (app: Router) => {
     
       const newConfig = {...config}
       newConfig.teams = teamConfig
+      newConfig.fork_observer_api = fork_observer_api
     
       fs.writeFileSync(gameConfigPath, JSON.stringify(newConfig, null, 2));
 

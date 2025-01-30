@@ -61,8 +61,12 @@ const calculateEventFromDiff = (
       const prevLatestTip = prevNode.tips[0];
       const nextLatestTip = node.tips[0];
 
+      if (!prevLatestTip?.height || !nextLatestTip?.height) {
+        break;
+      }
+
       const isPrevLagging = isNodeLagging(
-        prevLatestTip.height,
+        prevLatestTip?.height,
         prevTipHeight,
         config
       );
