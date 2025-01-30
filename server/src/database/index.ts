@@ -1,7 +1,7 @@
 import sqlite3 from "sqlite3";
 
 // Connect to a SQLite database or create it if it doesn't exist
-export const db = new sqlite3.Database("./src/database/database.db", async (err) => {
+export const db = new sqlite3.Database("./data/database/database.db", async (err) => {
   if (err) {
     console.error("Could not connect to database", err);
   } else {
