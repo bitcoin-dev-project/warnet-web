@@ -39,10 +39,6 @@ const GamePage = async ({ params }: { params: { slug: string } }) => {
     return <ErrorScreen error={{ error: true, message: gameConfig.message }} />;
   }
 
-  if (!gameConfig?.websocket_url) {
-    return <ErrorScreen error={{ error: true, message: "No websocket url found for server" }} />;
-  }
-
   const websocketUrl = toWebSocketURL(decryptedSlug);
 
   gameConfig.websocket_url = websocketUrl;
