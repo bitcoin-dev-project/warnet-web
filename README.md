@@ -38,27 +38,27 @@ Note: This file is auto-generated and should not be overwritten. Points awarded 
 ## API
 The server starts polling the fork observer api every 10 seconds on startup.
 
-### Polling
+### Polling **(Auth required)**
 POST `/api/polling/start` starts polling the fork observer api.
-POST `/api/polling/stop` stops polling the fork observer api.
 
-### Database
-POST `/api/db/reset` resets the database.
+POST `/api/polling/stop` stops polling the fork observer api.
 
 ### Config
 GET `api/config` returns the config file
 
-POST `/api/config/raw_update` updates the config file.
+POST `/api/config/raw_update` **(Auth required)** <br>updates the config file.
 - overwrites the config file with the provided config
 - overwrites the team points if query param `overwriteTeamPoints` is set to true
 
-POST `api/config/compile-teams` compiles the teams from the fork observer api and populates teams in the config file
+POST `api/config/compile-teams` **(Auth required)**
+- compiles the teams from the fork observer api and populates teams field in the config file
+- overwrites the team points if query param `overwriteTeamPoints` is set to true
 
 ### Team Points
 GET `api/team-points` returns the team points
 
-POST `api/team-points` updates the team points
-body paramter e.g
+POST `api/team-points` **(Auth required)** <br> updates the team points <br>
+using body parameter e.g
 ```json
 {
     "name": "zip",
@@ -67,9 +67,12 @@ body paramter e.g
 }
 ```
 
+### Events
+GET `/api/events` returns all events (header height changes, fork observer data changes, and awarded points)
+
 ### Node Data
 GET `/api/fork-data` returns the header and nodes data
 
-### Reset
+### Reset **(Auth required)**
 POST `/api/db/reset` resets the data db. This is useful if you want to restart the game.
 
