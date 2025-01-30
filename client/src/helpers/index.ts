@@ -42,7 +42,7 @@ export const compileTeamNode = (teamNode: NodeData, latestTipHeight: number, gam
 
     const score_for_version = scoreForVersion(version, points_config);
 
-    const isLagging = isNodeLagging(tips[0].height, latestTipHeight, config);
+    const isLagging = isNodeLagging(tips?.[0]?.height ?? 0, latestTipHeight, config);
     if (!reachable) {
       extraStats.status = "unreachable";
       extraStats.score = points_config.points_per_unreachable_node;
@@ -71,10 +71,18 @@ const scoreForVersion = (version: string, points_config: GameConfig["points_conf
 
 export const getVersionNumber = (version: string) => {
   // get the version number from the version string
-  return version.split(":")[1].split("/")[0].split("(")[0] ?? false;
+  try {
+    return version.split(":")[1]?.split("/")[0]?.split("(")[0] ?? version;
+  } catch(error) {
+    console.log("version with error", version)
+    return version
+  }
 }
 
 export const isNodeLagging = (nodeHeight: number, latestTipHeight: number, config: GameConfig["config"]) => {
+  if (!nodeHeight || !latestTipHeight) {
+    return false;
+  }
   return nodeHeight <= latestTipHeight - config.blocks_behind_before_considered_lagging;
 }
 

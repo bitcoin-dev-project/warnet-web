@@ -37,7 +37,7 @@ const NodeItem = ({ data, latestTipHeight }: NodeItemProps) => {
 
   const coreVersion = getVersionNumber(version) ?? version;
 
-  const blocksBehind = latestTipHeight - tips[0].height;
+  const blocksBehind = latestTipHeight - (tips?.[0]?.height ?? 0);
 
   const color = StatusConfig[data.status as keyof typeof StatusConfig];
 
@@ -50,7 +50,7 @@ const NodeItem = ({ data, latestTipHeight }: NodeItemProps) => {
       <div className="absolute bottom-[calc(100%+8px)] left-0 transform bg-purple-900/90 rounded-md shadow-lg w-40 py-2 px-3 opacity-0 invisible group-hover/node:opacity-100 group-hover/node:visible transition-all duration-200 delay-500 z-50 text-gray-200">
         <p className="capitalize">{data.name}</p>
         <p>{data.implementation}</p>
-        <p>Tip: {tips[0].height}</p>
+        <p>Tip: {tips?.[0]?.height ?? 0}</p>
         <p>Score: {data.score}</p>
       </div>
     </div>

@@ -3,7 +3,7 @@ import Game from "../game";
 import { URLEncryptor } from "@/lib/urlObfuscator";
 import { isValidUrl } from "@/helpers/validation";
 import LoadingScreen from "@/components/loading-screen";
-import { fetchConfig } from "../utils";
+import { fetchConfig, toWebSocketURL } from "../utils";
 
 // force dynamic page (page is never cached)
 export const dynamic = "force-dynamic";
@@ -35,8 +35,6 @@ const GamePage = async ({ params }: { params: { slug: string } }) => {
   
   const gameConfig = await fetchConfig(decryptedSlug + "/config");
 
-  console.dir({decryptedSlug, gameConfig}, {depth: 4})
-
   if (gameConfig instanceof Error) {
     return <ErrorScreen error={{ error: true, message: gameConfig.message }} />;
   }
@@ -44,6 +42,10 @@ const GamePage = async ({ params }: { params: { slug: string } }) => {
   if (!gameConfig?.websocket_url) {
     return <ErrorScreen error={{ error: true, message: "No websocket url found for server" }} />;
   }
+
+  const websocketUrl = toWebSocketURL(decryptedSlug);
+
+  gameConfig.websocket_url = websocketUrl;
 
   return <Game gameConfig={gameConfig} />;
 };

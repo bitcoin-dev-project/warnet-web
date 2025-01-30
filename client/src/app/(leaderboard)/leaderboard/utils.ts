@@ -39,3 +39,10 @@ export const fetchConfig = async (url: string): Promise<GameConfig | Error> => {
     }
   }
 };
+
+export function toWebSocketURL(httpUrl: string) {
+  const url = new URL(httpUrl);
+  url.protocol = url.protocol === "https:" ? "wss:" : "ws:";
+  url.pathname += "/websocket";
+  return url.toString();
+}
