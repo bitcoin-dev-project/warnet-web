@@ -19,6 +19,9 @@ export const useForkObserverData = ({server_url}: {server_url?: string}) =>
   useQuery<ForkObserverData, Error>({
     queryFn: () => getData(),
     queryKey: ["fork-observer-data"],
+    // keeps previous data in case of error
+    placeholderData: (prev) => prev,
     refetchOnWindowFocus: true,
-    refetchIntervalInBackground: true,
+    // maintains refetch even when browser tab is in background
+    // refetchIntervalInBackground: true,
   });

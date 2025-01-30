@@ -14,6 +14,8 @@ export const useInternalData = () =>
   useQuery<InternalData, Error>({
     queryFn: () => getData(),
     queryKey: ["events", "points"],
+    // keeps previous data in case of error
+    placeholderData: (prev) => prev,
     refetchOnWindowFocus: true,
     // refetchInterval: shouldPoll ? pollInterval : 0, // 3 seconds default
     // initialData: initialData,

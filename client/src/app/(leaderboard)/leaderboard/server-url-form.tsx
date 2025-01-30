@@ -10,7 +10,7 @@ type serverUrlResponse = {
 }
 
 interface ServerUrlInputProps {
-  processServerUrl: (prevState: any, formData: FormData) => Promise<{ success: boolean; message: string, data: string | null }>
+  processServerUrl: (formData: FormData) => Promise<{ success: boolean; message: string, data: string | null }>
 }
 
 export default function ServerUrlForm({ processServerUrl }: ServerUrlInputProps) {
@@ -23,7 +23,7 @@ export default function ServerUrlForm({ processServerUrl }: ServerUrlInputProps)
     setIsLoading(true)
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
-    const response = await processServerUrl(null, formData)
+    const response = await processServerUrl(formData)
 
     setIsLoading(false)
     setState(response)

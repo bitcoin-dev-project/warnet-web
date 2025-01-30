@@ -13,7 +13,7 @@ const serverUrlSchema = z.object({
   url: z.string().url("Please enter a valid URL"),
 });
 
-async function processServerUrl(prevState: any, formData: FormData) {
+async function processServerUrl(formData: FormData) {
   "use server";
 
   const url = formData.get("url");

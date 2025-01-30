@@ -1,6 +1,5 @@
-import fs, { write } from "fs";
 import { NextRequest, NextResponse } from "next/server";
-import { configPath, eventsPath, getConfig, getEvents, teamPath, writeToFile } from "@/config/filesystem";
+import { configPath, eventsPath, getConfig, teamPath, writeToFile } from "@/config/filesystem";
 import { createTeamPoints } from "@/helpers";
 import { ForkObserverData, Team } from "@/types";
 

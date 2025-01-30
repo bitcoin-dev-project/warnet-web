@@ -28,15 +28,16 @@ export const websocketMessageType = {
 export type WebsocketMessageType = keyof typeof websocketMessageType;
 
 const Game = ({ gameConfig }: GameProps) => {
+
   const { teams } = gameConfig;
   const { data, isLoading, error, refetch: refetchForkObserverData } = useForkObserverData({});
   const { data: internalData, refetch: refetchInternalData } = useInternalData();
 
   const events = internalData?.events ?? [];
 
-  const feedEvents = events.sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+  // const feedEvents = events.sort(
+  //   (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  // );
 
   const [_socket, setSocket] = useState<WebSocket | null>(null);
 
@@ -78,6 +79,7 @@ const Game = ({ gameConfig }: GameProps) => {
 
     socketInstance.onmessage = (event) => {
       const data = JSON.parse(event.data) as WebsocketMessage;
+
       switch (data.type) {
         case "Event":
           refetchInternalData();
@@ -101,7 +103,7 @@ const Game = ({ gameConfig }: GameProps) => {
   return (
     <div className={`flex flex-col min-h-full gap-4`}>
       <div className="rounded-lg flex justify-stretch max-h-[534px] gap-4 ">
-        <ActivityFeed feed={feedEvents ?? []} currentTip={latestTipHeight} />
+        <ActivityFeed feed={events ?? []} currentTip={latestTipHeight} />
         <Leaderboard
           teamPoints={teamPoints}
           awardedPoints={internalData?.points ?? {}}
