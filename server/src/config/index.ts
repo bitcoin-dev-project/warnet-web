@@ -1,7 +1,6 @@
-import path from "path";
 import fs from "fs";
 import { ForkObserverData, GameConfig } from "../../shared/types";
-import { getGameConfig, getTeamPoints } from "../service/file";
+import { getGameConfig, getTeamPoints, teamPointsPath } from "../service/file";
 import { z } from "zod";
 
 const TeamSchema = z.object({
@@ -22,10 +21,6 @@ const GameConfigSchema = z.object({
   fork_observer_api: z.string(),
 });
 
-const teamPath = path.resolve(process.cwd(), "..", "data", "team-points.json");
-
-// const savedDefaultDataPath = path.resolve(process.cwd(), "..", "_default", "data.json");
-
 export const initializeTeamPoints = (teams: GameConfig["teams"]) => {
   const teamsJson: {[key: string]: number} = {};
 
@@ -33,11 +28,15 @@ export const initializeTeamPoints = (teams: GameConfig["teams"]) => {
     teamsJson[team.name] = 0;
   });
   
-  fs.writeFileSync(
-    teamPath,
-    JSON.stringify(teamsJson, null, 2),
-    "utf-8"
-  );
+  try {
+    fs.writeFileSync(
+      teamPointsPath,
+      JSON.stringify(teamsJson, null, 2),
+      "utf-8"
+    );
+  } catch (error: any) {
+    console.error("Failed to write team points to file:", error?.message);
+  }
 };
 
 export function initializeLoadedConfig() {

@@ -54,6 +54,7 @@ export const configRoute = (app: Router) => {
     fs.writeFileSync(gameConfigPath, JSON.stringify(config, null, 2));
 
     if (overWriteTeamPointsBool) {
+      console.log("overwrite-config found: initializing team points")
       initializeTeamPoints(config.teams);
     }
     
@@ -65,10 +66,27 @@ export const configRoute = (app: Router) => {
 
   route.post("/compile-teams", adminAuth, async (req: Request, res: Response) => {
     try {
+      const fork_observer_api = req.query.fork_observer_api;
       const overWriteTeamPoints = req.query.overwriteTeamPoints;
       const overWriteTeamPointsBool = overWriteTeamPoints === "true";
 
       const config = getGameConfig();
+
+      try {
+        if (typeof fork_observer_api !== "string") {
+          throw new Error("Invalid fork_observer_api");
+        }
+        if (!fork_observer_api.trim()) {
+          throw new Error("No fork_observer_api provided");
+        }
+        new URL(fork_observer_api);
+      } catch (error) {
+        return res.status(400).json({
+          message: "Invalid fork_observer_api",
+          success: false,
+          data: null,
+        });
+      }
     
       if (config instanceof Error) {
         return res.status(500).json({
@@ -78,11 +96,11 @@ export const configRoute = (app: Router) => {
         });
       }
     
-      const response = await fetch(config.fork_observer_api.trim());
+      const response = await fetch(fork_observer_api.trim());
       
       if (!response.ok || response.status !== 200) {
         return res.status(500).json({
-          message: "Error fetching data from fork_observer_api in config",
+          message: "Error fetching data from fork_observer_api",
           success: false,
           data: null,
         });
@@ -94,7 +112,7 @@ export const configRoute = (app: Router) => {
     
       if (!isValidData) {
         return res.status(400).json({
-          message: "Invalid data from fork_observer_api in config",
+          message: "Invalid data from fork_observer_api",
           success: false,
           data: null,
         });
@@ -108,6 +126,7 @@ export const configRoute = (app: Router) => {
       fs.writeFileSync(gameConfigPath, JSON.stringify(newConfig, null, 2));
 
       if (overWriteTeamPointsBool) {
+        console.log("overwrite-config found: initializing team points")
         initializeTeamPoints(teamConfig);
       }
     
