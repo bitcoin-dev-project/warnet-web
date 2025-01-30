@@ -8,7 +8,9 @@ import { GameConfig } from "@/types";
 import { compileTeamNode, organiseNodesIntoTeams } from "@/helpers";
 import ActivityFeed from "@/components/activity-feed";
 import Leaderboard from "@/components/leaderboard";
-import { useInternalData } from "@/services/useInternalData";
+import { useEvents } from "@/services/useEvents";
+import { useTeamPoints } from "@/services/useTeamPoints";
+import { useQueryClient } from "@tanstack/react-query";
 
 type GameProps = {
   gameConfig: GameConfig;
@@ -28,12 +30,13 @@ export const websocketMessageType = {
 export type WebsocketMessageType = keyof typeof websocketMessageType;
 
 const Game = ({ gameConfig }: GameProps) => {
-
+  const queryClient = useQueryClient();
   const { teams } = gameConfig;
   const { data, isLoading, error, refetch: refetchForkObserverData } = useForkObserverData({});
-  const { data: internalData, refetch: refetchInternalData } = useInternalData();
+  const { data: eventsData, refetch: refetchEvents } = useEvents();
+  const { data: awardedTeamPoints, refetch: refetchTeamPoints } = useTeamPoints();
 
-  const events = internalData?.events ?? [];
+  const events = eventsData ?? [];
 
   // const feedEvents = events.sort(
   //   (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -82,7 +85,16 @@ const Game = ({ gameConfig }: GameProps) => {
 
       switch (data.type) {
         case "Event":
-          refetchInternalData();
+          queryClient.setQueryData(["events"], (oldData: Event[] | undefined) => {
+            if (oldData) {
+              return [data.data, ...oldData];
+            }
+            return [data.data];
+          });
+          const event = data.data as Event;
+          if (event.type === "style-points") {
+            refetchTeamPoints();
+          }
           break;
         case "ForkObserverData":
           refetchForkObserverData();
@@ -106,7 +118,7 @@ const Game = ({ gameConfig }: GameProps) => {
         <ActivityFeed feed={events ?? []} currentTip={latestTipHeight} />
         <Leaderboard
           teamPoints={teamPoints}
-          awardedPoints={internalData?.points ?? {}}
+          awardedPoints={awardedTeamPoints ?? {}}
         />
       </div>
 

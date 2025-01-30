@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { AwardedTeamPoints, EVENT, InternalData } from "@/types";
+import { EVENT } from "@/types";
 import { headers } from "next/headers";
 import { decryptSlug } from "@/lib/urlObfuscator";
 
@@ -39,31 +39,7 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const pointsData = await fetch(server_url + "/team-points", {
-      cache: "no-store",
-      headers: {
-        Pragma: "no-cache",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        return data.data as AwardedTeamPoints;
-      })
-      .catch((err: any) => {
-        return new Error(err?.message ?? "Error fetching team points");
-      });
-
-    if (pointsData instanceof Error) {
-      return NextResponse.json(
-        { message: pointsData.message, data: null },
-        { status: 500 }
-      );
-    }
-
-    const data: InternalData = {
-      points: pointsData ?? {},
-      events: eventsData ?? [],
-    };
+    const data = eventsData ?? [];
 
     return NextResponse.json({ data, message: "Success" }, { status: 200 });
   } catch (error: any) {
