@@ -27,6 +27,8 @@ export const initializeTeamPoints = (teams: GameConfig["teams"]) => {
   teams.forEach((team) => {
     teamsJson[team.name] = 0;
   });
+
+  console.log("derived teams json:", teamsJson)
   
   try {
     fs.writeFileSync(

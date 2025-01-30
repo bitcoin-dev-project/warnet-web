@@ -4,6 +4,7 @@ import { gameConfigPath, getGameConfig } from "../service/file";
 import { z } from "zod";
 import fs from "fs";
 import { compileTeams, initializeTeamPoints, validateConfig } from "../config";
+import { GameConfig } from "../../shared/types";
 
 const route = Router();
 
@@ -30,7 +31,7 @@ export const configRoute = (app: Router) => {
   route.post("/raw_update", adminAuth,async (req: Request, res: Response) => {
     const config = req.body
 
-    const overWriteTeamPoints = req.params.overwriteTeamPoints;
+    const overWriteTeamPoints = req.query.overwriteTeamPoints;
     const overWriteTeamPointsBool = overWriteTeamPoints === "true";
 
     const isValidConfig = validateConfig(config)
@@ -55,7 +56,7 @@ export const configRoute = (app: Router) => {
 
     if (overWriteTeamPointsBool) {
       console.log("overwrite-config found: initializing team points")
-      initializeTeamPoints(config.teams);
+      initializeTeamPoints((config as GameConfig).teams);
     }
     
     return res.status(200).json({
