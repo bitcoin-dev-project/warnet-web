@@ -22,9 +22,6 @@ const startServer = async () => {
   await initializeEventsTable();
   internalDataCache.initialize();
 
-  // debugging
-  console.log("Cache on startup:", internalDataCache.get("new"));
-  
   // initialize websocket manager
   wsManager.initialize(server);
   // start polling

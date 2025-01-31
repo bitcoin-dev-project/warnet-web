@@ -20,10 +20,6 @@ class CacheManager {
     this.cache[key] = value;
   }
 
-  constructor() {
-    this.initialize();
-  }
-
   initialize() {
     this.cache = {
       old: null,
