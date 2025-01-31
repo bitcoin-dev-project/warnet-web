@@ -1,43 +1,5 @@
-// import { existsSync, mkdirSync, readdirSync, copyFileSync } from "fs";
-// import path from "path";
-
-// const sourceDir = path.resolve(process.cwd(), "..", "data"); // Root-level ./data directory
-// const targetDir = path.resolve(process.cwd(), "data"); // /app/server/data in Docker
-
-// // Ensure target directory exists
-// if (!existsSync(targetDir)) {
-//   mkdirSync(targetDir, { recursive: true });
-// }
-
-// // Check if targetDir is empty
-// if (readdirSync(targetDir).length === 0) {
-//   console.log("Target data directory is empty. Copying files...");
-//   const files = readdirSync(sourceDir);
-//   files.forEach(file => {
-//     copyFileSync(path.join(sourceDir, file), path.join(targetDir, file));
-//   });
-//   console.log("Data files copied successfully.");
-// } else {
-//   console.log("Target data directory is not empty. Skipping copy.");
-// }
-
-import { existsSync, mkdirSync, readdirSync, copyFileSync, rmSync, statSync } from "fs";
+import { existsSync, mkdirSync, readdirSync, copyFileSync, statSync } from "fs";
 import path from "path";
-
-// Function to delete contents of a directory without removing the directory itself
-const clearDirectory = (dir: string) => {
-  if (!existsSync(dir)) return;
-
-  readdirSync(dir).forEach(file => {
-    const fullPath = path.join(dir, file);
-
-    if (statSync(fullPath).isDirectory()) {
-      rmSync(fullPath, { recursive: true, force: true }); // Remove subdirectories
-    } else {
-      rmSync(fullPath, { force: true }); // Remove files
-    }
-  });
-};
 
 // Function to recursively copy directories
 const copyRecursive = (src: string, dest: string) => {
@@ -61,12 +23,16 @@ const copyRecursive = (src: string, dest: string) => {
 const sourceDir = path.resolve(process.cwd(), "..", "data"); // Root-level ./data
 const targetDir = path.resolve(process.cwd(), "data"); // /app/server/data in Docker
 
-// Clear the directory instead of deleting it
-console.log("Clearing existing data in target directory...");
-clearDirectory(targetDir);
+// Check if target directory is empty
+if (!existsSync(targetDir) || readdirSync(targetDir).length === 0) {
+  console.log("Target directory is empty. Proceeding with data copy...");
+  
+  // Ensure target directory exists
+  mkdirSync(targetDir, { recursive: true });
 
-// Copy everything from source to target
-console.log("Copying files and directories from source...");
-copyRecursive(sourceDir, targetDir);
-
-console.log("Data overwrite complete.");
+  // Copy everything from source to target
+  copyRecursive(sourceDir, targetDir);
+  console.log("Data setup complete.");
+} else {
+  console.log("Target directory is not empty. Skipping data copy.");
+}
