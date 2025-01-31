@@ -17,44 +17,34 @@ export const resetRoute = (app: Router) => {
       if (isRunning) {
         pollingService.stop();
       }
+      
+      await clearAllEvents();
 
-      try {
-        // reset team points
-        console.log("resetting team points")
+      const gameConfig = getGameConfig();
 
-        const gameConfig = getGameConfig();
-  
-        if (gameConfig instanceof Error) {
-          return res.status(500).json({
-            message: gameConfig.message,
-            success: false,
-            data: null,
-          });
-        }
-  
-        const { teams } = gameConfig;
-        initializeTeamPoints(teams);
-      } catch (error: any) {
-        console.error("Error resetting team points:", error);
+      if (gameConfig instanceof Error) {
         return res.status(500).json({
-          message: "Error resetting team points: " + error?.message,
+          message: gameConfig.message,
           success: false,
           data: null,
         });
       }
+
+      const { teams } = gameConfig;
+      // reset team points
+      console.log("resetting team points")
+      initializeTeamPoints(teams);
 
       // clear cache
       console.log("clearing cache")
       internalDataCache.reset();
 
       return res.status(200).json({
-        message: "Database reset",
+        message: "All data reset",
         success: true,
         data: null,
       });
-
     } catch (error: any) {
-      console.error("Error resetting", error);
       return res.status(500).json({
         message: error?.message ?? "Error resetting",
         success: false,
