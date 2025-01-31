@@ -42,6 +42,11 @@ class CacheManager {
     this.set("old", this.cache.new);
     this.set("new", data);
   }
+
+  reset() {
+    this.set("old", null);
+    this.set("new", null);
+  }
 }
 
 export const internalDataCache = new CacheManager();

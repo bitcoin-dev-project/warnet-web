@@ -4,6 +4,7 @@ import { pollingService } from "../service/polling";
 import { clearAllEvents } from "../service/sqlite";
 import { getGameConfig, teamPointsPath } from "../service/file";
 import { initializeTeamPoints } from "../config";
+import { internalDataCache } from "../service/cache/cacheManager";
 
 const route = Router();
 
@@ -36,6 +37,9 @@ export const resetRoute = (app: Router) => {
 
     const { teams } = gameConfig;
     initializeTeamPoints(teams);
+
+    // clear cache
+    internalDataCache.reset();
 
     return res.status(200).json({
       message: "Database reset",
