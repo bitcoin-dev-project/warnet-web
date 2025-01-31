@@ -8,7 +8,10 @@ export const forkData = (app: Router) => {
   app.use("/fork-data", route);
 
   route.get("/", (req: Request, res: Response) => {
+    // debugging
+    console.log("Cache on forkdata:", internalDataCache.get("new"));
     const cacheData = internalDataCache.get("new");
+
     if (cacheData === null) {
       return res.status(500).json({
         success: false,
