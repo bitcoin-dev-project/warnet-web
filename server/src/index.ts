@@ -25,7 +25,7 @@ const startServer = async () => {
   // initialize websocket manager
   wsManager.initialize(server);
   // start polling
-  // pollingService.start();
+  pollingService.start();
 
   app.use(cors());
   app.use(express.json());

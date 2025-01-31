@@ -5,6 +5,7 @@ import { z } from "zod";
 import fs from "fs";
 import { compileTeams, initializeTeamPoints, validateConfig } from "../config";
 import { GameConfig } from "../../shared/types";
+import { pollingService } from "../service/polling";
 
 const route = Router();
 
@@ -67,6 +68,9 @@ export const configRoute = (app: Router) => {
 
   route.post("/compile-teams", adminAuth, async (req: Request, res: Response) => {
     try {
+      // Stop polling service before compiling
+      pollingService.stop();
+      
       const fork_observer_api = req.query.fork_observer_api;
       const overWriteTeamPoints = req.query.overwriteTeamPoints;
       const overWriteTeamPointsBool = overWriteTeamPoints === "true";
@@ -131,15 +135,18 @@ export const configRoute = (app: Router) => {
         console.log("overwrite-config found: initializing team points")
         initializeTeamPoints(teamConfig);
       }
+
+      // Start polling service after compile
+      pollingService.start();
     
       return res.status(200).json({
         message: "Teams compiled successfully",
         success: true,
         data: teamConfig,
       });
-    } catch (error) {
+    } catch (error: any ) {
       return res.status(500).json({
-        message: "Error compiling teams",
+        message: `Error compiling teams: ${error?.message}`,
         success: false,
         data: null,
       });
