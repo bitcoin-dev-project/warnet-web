@@ -1,5 +1,5 @@
 import { EVENT, ForkObserverResponseData, GameConfig } from "../../../shared/types";
-import { isNodeLagging } from "../../helpers";
+import { getLatestTipHeightForNode, isNodeLagging } from "../../helpers";
 import { internalDataCache } from "../cache/cacheManager";
 import { getGameConfig } from "../file";
 import { cacheDataToForkObserverResponseData } from "../transformers";
@@ -58,11 +58,9 @@ const calculateEventFromDiff = (
         date: new Date().toISOString(),
       });
     } else {
-      const prevNodeLatestTip = prevNode.tips?.[0];
-      const nextNodeLatestTip = node.tips?.[0];
 
-      const prevNodeLatestTipHeight = prevNodeLatestTip?.height ?? 0;
-      const nextNodeLatestTipHeight = nextNodeLatestTip?.height ?? 0;
+      const prevNodeLatestTipHeight = getLatestTipHeightForNode(prevNode);
+      const nextNodeLatestTipHeight = getLatestTipHeightForNode(node);
 
       const isPrevLagging = isNodeLagging(
         prevNodeLatestTipHeight,

@@ -29,6 +29,15 @@ export const organiseNodesIntoTeams = <K>({nodes, teams, formatNode}: {nodes: No
   return { nodeGroups };
 };
 
+export const getLatestTipHeightForNode = (node: NodeData) => {
+  try {
+    return node.tips?.find((tip) => tip.status === "active")?.height ?? 0;
+  } catch(error) {
+    console.log("error getting latest tip height for node", node.name)
+    return 0;
+  }
+}
+
 export const compileTeamNode = (teamNode: NodeData, latestTipHeight: number, gameConfig: GameConfig): NodeDataWithStatus => {
   const { points_config, config } = gameConfig;
   const { reachable, tips, version } = teamNode;
@@ -41,8 +50,8 @@ export const compileTeamNode = (teamNode: NodeData, latestTipHeight: number, gam
     }
 
     const score_for_version = scoreForVersion(version, points_config);
-
-    const isLagging = isNodeLagging(tips?.[0]?.height ?? 0, latestTipHeight, config);
+    const nodeTipHeight = getLatestTipHeightForNode(teamNode);
+    const isLagging = isNodeLagging(nodeTipHeight, latestTipHeight, config);
     if (!reachable) {
       extraStats.status = "unreachable";
       extraStats.score = points_config.points_per_unreachable_node;
