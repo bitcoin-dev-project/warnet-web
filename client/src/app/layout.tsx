@@ -24,7 +24,7 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${ibm.variable} font-ibm`}>
+      <body className={`${inter.variable} ${ibm.variable} font-ibm scroller`}>
         <QueryProvider>
           {children}
         </QueryProvider>

@@ -45,7 +45,7 @@ const ActivityFeed = ({ feed, currentTip }: ActivityFeedProps) => {
           <span className="text-green-400 font-bold">{currentTip}</span>
         </div>
       </div>
-      <section className="relative flex flex-col gap-4 p-4 pt-[48px] rounded-lg w-full h-full overflow-scroll border border-neutral-800">
+      <section className="relative flex flex-col gap-4 p-4 pt-[48px] rounded-lg w-full h-full overflow-y-scroll border border-neutral-800">
         <OnlineIndicator />
         <AnimatePresence>
           {feed.map((item, index) => (
