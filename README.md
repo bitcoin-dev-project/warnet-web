@@ -51,8 +51,9 @@ POST `/api/config/raw_update` **(Auth required)** <br>updates the config file.
 - overwrites the team points if query param `overwriteTeamPoints` is set to true
 
 POST `api/config/compile-teams` **(Auth required)**
+params: `fork_observer_api` **required**.
 - compiles the teams from the fork observer api and populates teams field in the config file
-- overwrites the team points if query param `overwriteTeamPoints` is set to true
+- overwrites the team points if query param `overwriteTeamPoints` is set to true (resets all team points to 0)
 
 ### Team Points
 GET `api/team-points` returns the team points
