@@ -50,6 +50,7 @@ POST `/api/config/raw_update` **(Auth required)** <br>updates the config file.
 - overwrites the config file with the provided config
 - overwrites the team points if query param `overwriteTeamPoints` is set to true
 
+#### compile teams
 POST `api/config/compile-teams` **(Auth required)**
 params: `fork_observer_api` **required**.
 - compiles the teams from the fork observer api and populates teams field in the config file
@@ -76,4 +77,10 @@ GET `/api/fork-data` returns the header and nodes data
 
 ### Reset **(Auth required)**
 POST `/api/db/reset` resets the data db. This is useful if you want to restart the game.
-
+_______________________________
+## Setup to Start a new game  🚀🚀
+This is my usual process to initialize a new game
+- reset: call the [reset endpoint](#reset-auth-required)
+- [stop polling](#polling-auth-required)
+- [call compile teams](#compile-teams) `api/config/compile-teams` (you need `fork-observer-api` here)
+and that is it!
