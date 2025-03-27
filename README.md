@@ -54,6 +54,17 @@ An editable **team-points** config can be found in **`data/team-points.json`**.
 
 The server starts polling the fork observer API every **10 seconds** on startup.
 
+## Authentication
+
+Endpoints requiring authentication must include the `x-auth-key` header in the request.
+
+**Example:**
+```http
+x-auth-key: YOUR_SECRET_KEY
+```
+
+---
+
 ## Polling **(Auth required)**
 
 - **Start polling:**  
