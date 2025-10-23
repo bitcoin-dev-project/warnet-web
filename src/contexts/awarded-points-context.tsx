@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { useInternalData } from "@/services/useInternalData";
 import { AwardedTeamPoints, InternalData, StylePoints } from "@/types";
+import { ASSET_PREFIX } from "@/app/config";
 
 type updateStylePointsType = ({
   type,
@@ -62,7 +63,7 @@ export const AwardedPointsProvider = ({
     const { name, score, reason } = stylePoints;
 
     try {
-      const response = await fetch("/api/save-config", {
+      const response = await fetch(`${ASSET_PREFIX}/api/save-config`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

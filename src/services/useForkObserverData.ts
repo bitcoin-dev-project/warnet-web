@@ -1,9 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import type { EVENT, ForkObserverData, GameConfig, Team } from "@/types";
 import { isNodeLagging } from "@/helpers";
+import { ASSET_PREFIX } from "@/app/config";
 
 const getData = async (): Promise<ForkObserverData> => {
-  return fetch("/api/node-data", {
+  return fetch(`${ASSET_PREFIX}/api/node-data`, {
       cache: 'no-store',
       headers: {
         'Pragma': 'no-cache',

@@ -52,7 +52,7 @@ const Game = ({ gameConfig }: GameProps) => {
 
   // useEffect(() => {
   //   const socketInstance = new (ClientIO as any)("ws://localhost:3000", {
-  //     path: "/api/websocket",
+  //     path: "/leaderboard/api/websocket",
   //     addTrailingSlash: false,
   //   });
 
