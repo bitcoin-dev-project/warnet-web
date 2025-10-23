@@ -8,22 +8,23 @@ export const getLatestTipHeight = ({header_infos}: {header_infos: HeaderInfoData
   return { latestTipHeight };
 };
 
-export const organiseNodesIntoTeams = <K>({nodes, teams, formatNode}: {nodes: NodeData[], teams: GameConfig["teams"], formatNode: (teamNode: NodeData) => K}) => {
+export const organiseNodesIntoTeams = <K>({nodes, formatNode}: {nodes: NodeData[], formatNode: (teamNode: NodeData) => K}) => {
   const nodeGroups: Record<string, K[]> = {};
 
-  for (const team of teams) {
-    const group = team.name;
+  for (const node of nodes) {
+    // Extract team name: everything after the second dash
+    const parts = node.name.split("-");
+    if (parts.length !== 3) {
+      continue;
+    }
+    const teamName = parts.slice(2).join("-") || "unknown";
 
-    if (!nodeGroups[group]) {
-      nodeGroups[group] = [] as K[];
+    if (!nodeGroups[teamName]) {
+      nodeGroups[teamName] = [] as K[];
     }
 
-    team.nodes.forEach((nodeName) => {
-      const teamNodeExists = nodes.find((item) => item.name === nodeName);
-      if (!teamNodeExists) return;
-      const compiledNode = formatNode(teamNodeExists);
-      nodeGroups[group].push(compiledNode);
-    });
+    const compiledNode = formatNode(node);
+    nodeGroups[teamName].push(compiledNode);
   }
 
   return { nodeGroups };
