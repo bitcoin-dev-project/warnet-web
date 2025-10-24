@@ -15,7 +15,8 @@ const page = () => {
     points,
     stylePoints,
     updateStylePoints,
-    savePoints
+    savePoints,
+    teams
   } = useAwardedPointsContext();
 
   const [adminForm, setAdminForm] = useState<AdminForm>({
@@ -123,9 +124,9 @@ const page = () => {
                   required
                 >
                   <option value="">Select a team</option>
-                  {Object.keys(points).map((key, index) => (
-                    <option key={`${key}-${index}`} value={key}>
-                      {key}
+                  {teams.map(team => (
+                    <option key={team} value={team}>
+                      {team}
                     </option>
                   ))}
                 </select>

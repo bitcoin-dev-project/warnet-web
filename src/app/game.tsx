@@ -40,7 +40,7 @@ const Game = ({ gameConfig }: GameProps) => {
     return compileTeamNode(teamNode, latestTipHeight, gameConfig);
   };
 
-  const { nodeGroups } = organiseNodesIntoTeams({ nodes, teams, formatNode });
+  const { nodeGroups } = organiseNodesIntoTeams({ nodes, formatNode });
 
   const teamPoints = Object.entries(nodeGroups).reduce(
     (acc, [key, value]) => {
@@ -52,7 +52,7 @@ const Game = ({ gameConfig }: GameProps) => {
 
   // useEffect(() => {
   //   const socketInstance = new (ClientIO as any)("ws://localhost:3000", {
-  //     path: "/api/websocket",
+  //     path: "/leaderboard/api/websocket",
   //     addTrailingSlash: false,
   //   });
 

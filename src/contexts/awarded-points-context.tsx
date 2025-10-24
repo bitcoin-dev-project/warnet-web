@@ -1,7 +1,9 @@
 "use client";
 import React, { useState } from "react";
 import { useInternalData } from "@/services/useInternalData";
+import { getTeamsFromForkObserver } from "@/services/useForkObserverData";
 import { AwardedTeamPoints, InternalData, StylePoints } from "@/types";
+import { ASSET_PREFIX } from "@/app/config";
 
 type updateStylePointsType = ({
   type,
@@ -21,6 +23,7 @@ type AwardedPointsContext = {
     message: any;
     unauthorized?: boolean;
   }>;
+  teams: string[]
 };
 
 export const awardedPointsContext = React.createContext<AwardedPointsContext>(
@@ -44,7 +47,7 @@ export const AwardedPointsProvider = ({
   // const [points, setPoints] = useState(initialInternalData.points);
   const { data: internalData } = useInternalData({ shouldPoll: true });
   // const {data: internalData} = useInternalData({initialData: initialInternalData, shouldPoll: true});
-
+  const { data: teams = [] } = getTeamsFromForkObserver();
   const [stylePoints, setStylePoints] = useState(defaultStylePoints);
 
   if (
@@ -62,7 +65,7 @@ export const AwardedPointsProvider = ({
     const { name, score, reason } = stylePoints;
 
     try {
-      const response = await fetch("/api/save-config", {
+      const response = await fetch(`${ASSET_PREFIX}/api/save-config`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -111,6 +114,7 @@ export const AwardedPointsProvider = ({
         stylePoints,
         updateStylePoints,
         savePoints: handleSaveConfig,
+        teams
       }}
     >
       {children}
