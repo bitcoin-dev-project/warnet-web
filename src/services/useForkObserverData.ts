@@ -17,6 +17,30 @@ const getData = async (): Promise<ForkObserverData> => {
     .catch((err) => err);
 };
 
+export const getTeamsFromForkObserver = () =>
+  useQuery({
+    queryKey: ['teams-from-fork-observer'],
+    queryFn: getData,
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+    retry: false,
+    staleTime: Infinity,
+    select: (data: ForkObserverData) => {
+      const teams: string[] = [];
+      data.nodes.forEach((node: any) => {
+        const name = node.name;
+        const isTeamNode = node.name.split('-').length === 3
+        if (isTeamNode) {
+          const [_tank, _id, team] = node.name.split('-')
+          if (!teams.includes(team))
+            teams.push(team);
+        }
+        return;
+      })
+      return teams;
+    },
+  });
+
 type UseForkObserverDataOptions = {
   shouldPoll?: boolean;
   pollInterval?: number;
